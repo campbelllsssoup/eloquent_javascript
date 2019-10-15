@@ -1,4 +1,4 @@
-// Exercise 1-3: Chessboard
+// Exercise 1-3: Chessboard : DONE!!!
 
 /*
 
