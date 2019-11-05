@@ -1,4 +1,4 @@
-// Exercise 5-2: Your Own Loop : NOT DONE...
+// Exercise 5-2: Your Own Loop : DONE !!!
 
 /*
 	Write a higher-order function loop that provides something like a 
