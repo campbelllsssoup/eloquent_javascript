@@ -20,17 +20,27 @@
 	[5,4,3,2].
 */
 
+// [start, end, step].some(checkForNonNums)
+
 
 range = (start, end, step = 1) => {
   let rangeCollection = [];
 
   if (typeof start !== 'number' || 
       typeof end !== 'number' ||
-      typeof step !== 'number') {
+      typeof step !== 'number' ) {
     throw new Error('ArgumentError: all arguments must be numbers.');  
+  } else if( step > 0 && start > end ) {
+    throw new Error('ArgumentError: for positive step values, start must be less than end.');
+  } else if( step < 0 && start < end ) {
+    throw new Error('ArgumentError: for negative step values, start must be greater than end.');
+  } else if( step === 0 ) {
+    throw new Error('ArgumentError: your third argument step may not be 0');
+  } else if ( start === end ) {
+    throw new Error('ArgumentError: start may not be equal to end.');
   } else {
 
-    if (step >= 0) {
+    if (step > 0) {
       for(let i = start; i <= end; i += step){
         rangeCollection.push(i);
       }
@@ -43,12 +53,25 @@ range = (start, end, step = 1) => {
   return rangeCollection;
 }
 
+function checkForNonNums(val) {
+  if (isNaN(val)) {
+    return true;
+  } else if (val === Infinity) {
+    return true;
+  } else if (val === -Infinity) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 numsOnly = (arr) => {
   if (typeof arr !== 'object' || arr['length'] == undefined) {
     throw new Error('ArguementError: You may only supply an array as an argument.');
   } else {
     for (i=0;i<arr.length;i++){
       if (typeof arr[i] !== 'number') return false;
+      if (checkForNonNums(arr[i]) === true) return false;
     }
   }
   return true;
@@ -56,7 +79,7 @@ numsOnly = (arr) => {
 
 sum = (arr, count = 0) => {
   if (typeof arr !== 'object' || arr['length'] === undefined) {
-    throw new Error('ArguementError: You may only supply an array as an argument.');
+    throw new Error('ArgumentError: You may only supply an array as an argument.');
   } else if (numsOnly(arr) === false) {
     throw new Error('ArgumentError: Your array may only contain numbers as entries.');
   } else {
@@ -68,10 +91,9 @@ sum = (arr, count = 0) => {
 }
 
 try {
- // console.log(range(1,10));
- // console.log(range(100,1,-1));
- // console.log(sum([1,2,3,4,5]));
- console.log(sum(range(1,10)));
+  console.log(range(1,10));
+  console.log(range(100,1,1));
+  console.log(sum(range(1,10)));
 } catch(e) {
   console.log(e);
 }
