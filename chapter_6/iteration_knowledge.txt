@@ -1,0 +1,7 @@
+Iteration Knowledge: (Knowledge garnered from "Eloquent Javascript" & MDN Docs on Iterators)
+
+Challenge: Figure out what happens when you modify the group you're iterating over in Exercise 4
+and find a solution to the issue.
+
+
+
