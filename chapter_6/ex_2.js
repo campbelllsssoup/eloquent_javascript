@@ -26,39 +26,36 @@
 class Group {
 
   constructor() {
+    this.values = [];
     this.size = 0;
   }
 
   add(val) {
-    if (this.hasOwnProperty(val)) {
-      console.log('value already added to set!');
+    if (this.values.indexOf(val) !== -1) {
       return this;
     } else {
-      console.log('adding new value...');
-      this[val] = val;
+      this.values.push(val);
       this.size++;
       return this;
     }
   }
 
   delete(val) {
-    if (this.hasOwnProperty(val)) {
-      console.log('Deleting value...');
-      delete this[val]
+    let valIndex = this.values.indexOf(val);
+    if (valIndex !== -1) {
+      this.values.splice(valIndex, 1);
       this.size--;
-      console.log(this);
       return this;
     } else {
-      console.log("That value isn't in this set!");
       return this;
     }
   }
 
   has(val) {
-    if (this.hasOwnProperty(val)) {
-      return true;
-    } else {
+    if (this.values.indexOf(val) === -1) {
       return false;
+    } else {
+      return true;
     }
   }
 
@@ -69,5 +66,8 @@ let newGroup = new Group();
 newGroup = newGroup.add(1);
 newGroup = newGroup.add(8);
 newGroup = newGroup.add(7);
+console.log('Should return true', newGroup, newGroup.has(7));
 newGroup = newGroup.delete(7);
+console.log('Should return false', newGroup, newGroup.has(7));
+
 console.log('Size should be 2:', newGroup.size);
