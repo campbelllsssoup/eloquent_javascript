@@ -1111,6 +1111,6 @@ var SCRIPTS = [
     living: false,
     link: "https://en.wikipedia.org/wiki/Mongolian_writing_systems#Horizontal_square_script"
   }
-];
+]
 
-module.exports.SCRIPTS = SCRIPTS;
+module.exports = SCRIPTS;
