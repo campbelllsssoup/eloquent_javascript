@@ -86,4 +86,6 @@ console.log('Should return false', newGroup, newGroup.has(7));
 console.log('Size should be 2:', newGroup.size);
 */
 
-console.log(Group.from([1,2,3]));
+//console.log(Group.from([1,2,3]));
+
+exports.Group = Group;

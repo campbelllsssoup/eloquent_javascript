@@ -1,7 +1,7 @@
-// Exercise 6-3: Iterable Groups : NOT DONE...
-
+// Exercise 6-3: Iterable Groups : DONE!!!
+let groupClass = require('./ex_2.js');
+let Group = groupClass.Group;
 /*
-
 	Make the group class from the previous exercise iterable. Refer to
 	the section about the iterator interface earlier in the chapter if
 	you aren't clear on the exact form of the interface anymore.
@@ -15,9 +15,21 @@
 	
 	It is okay if your iterator behaves strangely when the group is 
 	modified during iteration.
-
-	
-
 */
 
+
+// import works, make Group class iterable
+
+Group.prototype[Symbol.iterator] = function*() {
+  let values = this.values;
+    for(let key of values) {
+      console.log(key)
+    }
+}
+
+let newGroup = Group.from([4,5,6]);
+
+for(let val of newGroup){
+  console.log(val);
+}
 
