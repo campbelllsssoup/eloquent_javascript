@@ -59,8 +59,21 @@ class Group {
     }
   }
 
+  static from(iterable) {
+    if (!iterable[Symbol.iterator]) return undefined;
+    let iterator = iterable[Symbol.iterator]();
+    let newGroup = new Group();
+    let currentStep = iterator.next();
+    while (currentStep.done == false) {
+      newGroup.add(currentStep.value);
+      currentStep = iterator.next();     
+    }
+    return newGroup;
+  }
+
 }
 
+/*
 let newGroup = new Group();
 
 newGroup = newGroup.add(1);
@@ -71,3 +84,6 @@ newGroup = newGroup.delete(7);
 console.log('Should return false', newGroup, newGroup.has(7));
 
 console.log('Size should be 2:', newGroup.size);
+*/
+
+console.log(Group.from([1,2,3]));
