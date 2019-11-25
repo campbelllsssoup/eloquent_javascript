@@ -1,5 +1,4 @@
-// Chapter 7: Robot Project: NOT DONE...
-
+// Chapter 7: Robot Project: DONE!!!
 
 const roads = ["Alice's House-Bob's House", "Alice's House-Cabin", "Alice's House-Post Office",
 "Bob's House-Town Hall", "Daria's House-Ernie's House", "Daria's House-Town Hall",
@@ -135,7 +134,8 @@ function runRobot(state, robot, memory, graph){
   for (let turn = 0;; turn++){
     if (state.parcels.length === 0) {
       console.log(`Done in ${turn} turns.`);
-      break;
+      // break;
+      return turn;
     }
     let action = robot(state, memory, graph);
     state = state.move(action.direction, graph);
@@ -213,7 +213,47 @@ function goalOrientedRobot({place, parcels}, route, graph) {
   return {direction: route[0], memory: route.slice(1)};
 }
 
-
 // console.log(runRobot(initialState, goalOrientedRobot, [], village)); // WORKS - a bit more efficient
 
+//------------------------------------------------------------------------------------------------------
+
+// Exercise 7-1: Measuring a Robot : NOT DONE...
+
+/*
+        It's hard to objectively compare robots by just letting them 
+        solve a few scenarios. Maybe one robot just happened to get 
+        easier tasks or the kind of tasks that it is good at, whereas
+        the other didn't.
+
+        Write a function compareRobots that takes two robots (and their
+        starting memory). It should generate 100 tasks and let each of 
+        the robots solve each of these tasks. When done, it should output
+        the average number of steps each robot took per task. (Delivering
+        one parcel).
+
+        For the sake of fairness, make sure you give each task to both 
+        robots, rather than generating different tasks per robot.
+*/
+
+
+// VillageState.random calculates a random package for an initial state of the village
+// starting point will always be "Post Office"
+
+// console.log(VillageState.random(village,1));
+
+function compareRobots(graph, robot1, robot1Mem, robot2, robot2Mem){
+  let tests = [];
+  let robot1Steps = 0;
+  let robot2Steps = 0;
+  for (let i=0; i < 100; i++){
+    let state = VillageState.random(graph, 1);
+    robot1Steps += runRobot(state, robot1, robot1Mem, graph);
+    robot2Steps += runRobot(state, robot2, robot2Mem, graph);
+  }
+  // (state, robot, memory, graph)
+  console.log('Robot 1 Total Steps:', robot1Steps / 100);
+  console.log('Robot 2 Total Steps:', robot2Steps / 100);
+}
+
+// compareRobots(village, goalOrientedRobot, [], routeRobot, mailRoute) // WORKS!!
 
