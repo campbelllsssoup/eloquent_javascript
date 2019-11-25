@@ -133,14 +133,14 @@ class VillageState {
 function runRobot(state, robot, memory, graph){
   for (let turn = 0;; turn++){
     if (state.parcels.length === 0) {
-      console.log(`Done in ${turn} turns.`);
+      // console.log(`Done in ${turn} turns.`);
       // break;
       return turn;
     }
     let action = robot(state, memory, graph);
     state = state.move(action.direction, graph);
     memory = action.memory;
-    console.log(`Moved to ${action.direction}`);
+    // console.log(`Moved to ${action.direction}`);
   }
 }
 
@@ -217,7 +217,7 @@ function goalOrientedRobot({place, parcels}, route, graph) {
 
 //------------------------------------------------------------------------------------------------------
 
-// Exercise 7-1: Measuring a Robot : NOT DONE...
+// Exercise 7-1: Measuring a Robot : DONE!!!
 
 /*
         It's hard to objectively compare robots by just letting them 
@@ -251,8 +251,8 @@ function compareRobots(graph, robot1, robot1Mem, robot2, robot2Mem){
     robot2Steps += runRobot(state, robot2, robot2Mem, graph);
   }
   // (state, robot, memory, graph)
-  console.log('Robot 1 Total Steps:', robot1Steps / 100);
-  console.log('Robot 2 Total Steps:', robot2Steps / 100);
+  console.log(`${robot1.name} Total Steps: ${robot1Steps / 100}`);
+  console.log(`${robot2.name} Total Steps: ${robot2Steps / 100}`);
 }
 
 // compareRobots(village, goalOrientedRobot, [], routeRobot, mailRoute) // WORKS!!
