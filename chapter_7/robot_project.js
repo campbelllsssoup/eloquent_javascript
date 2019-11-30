@@ -104,6 +104,7 @@ class VillageState {
   move(destination, graph) {
     if (!graph[this.place].includes(destination)) {
       return this;
+      // delivering a package is considered a step?
     } else {
       let parcels = this.parcels.map(p => {
         if (p.place != this.place) return p;
@@ -133,8 +134,6 @@ class VillageState {
 function runRobot(state, robot, memory, graph){
   for (let turn = 0;; turn++){
     if (state.parcels.length === 0) {
-      // console.log(`Done in ${turn} turns.`);
-      // break;
       return turn;
     }
     let action = robot(state, memory, graph);
@@ -173,7 +172,7 @@ VillageState.random = function random(graph, parcelCount = 5){
 
 let initialState = VillageState.random(village);
 
-// console.log(runRobot(initialState, randomRobot, undefined, village)); // WORKS - not efficient
+// console.log(runRobot(initialState, randomRobot, undefined, village)); // WORKS
 
 const mailRoute = ["Alice's House", "Cabin", "Alice's House", "Bob's House", 
 "Town Hall", "Daria's House", "Ernie's House", "Grete's House", "Shop", 
@@ -186,7 +185,30 @@ function routeRobot(state, memory, graph) {
   return { direction: memory[0], memory: memory.slice(1) }
 }
 
-// console.log(runRobot(initialState, routeRobot, mailRoute, village)); // WORKS - more efficient
+// console.log(runRobot(initialState, routeRobot, mailRoute, village)); // WORKS 
+
+/*
+  the below is an implementation of a DFS. Whenever a robot has not yet encountered
+  a place it automatically goes there. Though this solution works better for a parcelList
+  that has 5 parcels, it doesn't scale well for a parcelList that has 100 packages, in that
+  case you'd want to use routeRobot because it hits each place twice as it follows a route
+  throughout the map.
+
+  Average for routeRobot vs goalOrientedRobot when processing 5 parcels:
+  - routeRobot: 18 steps
+  - goalOrientedRobot: 15 steps
+
+  Average for routeRobot vs goalOrientedRobot when processing 1000 parcels:
+  - routeRobot: 24 steps
+  - goalOrientedRobot: 34.06 steps
+
+  Average steps for routeRobot vs goalOrientedRobot when processing 100000 parcels:
+  - routeRobot: 24 steps
+  - goalOrientedRobot: 33.54 steps
+
+  NOTE: the averages differ for the number of times you run compareRobots - I only
+  ran it once but overall similar comparisons will be drawn.
+*/ 
 
 function findRoute(graph, from, to) {
   let work = [{at: from, route: []}];
@@ -213,7 +235,7 @@ function goalOrientedRobot({place, parcels}, route, graph) {
   return {direction: route[0], memory: route.slice(1)};
 }
 
-// console.log(runRobot(initialState, goalOrientedRobot, [], village)); // WORKS - a bit more efficient
+// console.log(runRobot(initialState, goalOrientedRobot, [], village)); // WORKS 
 
 //------------------------------------------------------------------------------------------------------
 
@@ -242,18 +264,191 @@ function goalOrientedRobot({place, parcels}, route, graph) {
 // console.log(VillageState.random(village,1));
 
 function compareRobots(graph, robot1, robot1Mem, robot2, robot2Mem){
-  let tests = [];
   let robot1Steps = 0;
   let robot2Steps = 0;
   for (let i=0; i < 100; i++){
-    let state = VillageState.random(graph, 1);
+    let state = VillageState.random(graph, 5);
     robot1Steps += runRobot(state, robot1, robot1Mem, graph);
     robot2Steps += runRobot(state, robot2, robot2Mem, graph);
   }
-  // (state, robot, memory, graph)
-  console.log(`${robot1.name} Total Steps: ${robot1Steps / 100}`);
-  console.log(`${robot2.name} Total Steps: ${robot2Steps / 100}`);
+  console.log(`${robot1.name} Average Steps: ${robot1Steps / 100}`);
+  console.log(`${robot2.name} Average Steps: ${robot2Steps / 100}`);
 }
 
-// compareRobots(village, goalOrientedRobot, [], routeRobot, mailRoute) // WORKS!!
+/*
+  Note: For large inputs (>100 random parcels), routeRobot is more efficient than goalOrientedRobot,
+  at 10 parcels their efficiency starts to be around the same number of steps.
+
+  Took about 20 seconds to run when there were 100000 parcels per test.
+*/
+
+//------------------------------------------------------------------------------------------------------
+
+// Exercise 7-2: Robot Efficiency : NOT DONE...
+
+/*
+        NOTE: Before attempting to solve this, look into graph theory.
+
+        Can you write a robot that finishes the task faster than 
+        goalOrientedRobot? If you observe that robot's behavior, what
+        obviously stupid things does it do? How could those be improved?
+
+        If you solved the previous exercise, you might want to use your 
+        compareRobots function to verify whether you improved the robot.
+
+
+        Hint: 
+        The main limitation of goalOrientedRobot is that it considers only
+        one parcel at a time. It will often walk back and forth across the 
+        village because the parcel it happens to be looking at happens to 
+        be at the other side of the map, even if there are others much 
+        closer. 
+
+        One possible solution would be to compare routes for all parcels 
+        and then take the shortest one. (1)
+        
+        Even better results can be obtained,
+        if there are multiple shortest routes, by preferring the ones that go
+        to pick up a parcel instead of delivering a package. (2)
+
+
+        My thoughts:
+        Reorder parcels array so that the parcels with the closest address
+        that have not been picked up (parcel place is not equal to the state's place) 
+        have the highest priority && take the shortest route to pick up  - after all 
+        of the parcels are picked up, the parcels with the closest addresses should be 
+        delivered. (3)
+
+        ^^ this could be further optimized if you not only take the shortest route to
+        pickup / dropoff parcels, but take the routes that perform the most "work" - 
+        "work" here meaning that more packages are picked up / dropped off on the path
+        you take (since this doesn't always match up to the shortest path). (4)
+*/
+
+// note: you knew this, but just as a reminder - in order to use argument values as hash
+// keys you have to place them inside of square brackets so that the variable is evaluated.
+// works the same as it does in react when you are assigning form names to their values inside
+// the body of a POST/PATCH fetch request.
+
+function findShortestPath(graph, start, target) {
+  let level = {[start]: 0};
+  let parent = {[start]: null};
+  let i = 1;
+  let frontier = [start];
+  while (frontier.length !== 0){
+    let next = [];
+    for(let u of frontier){
+      for(let v of graph[u]){
+        if (level[v] === undefined){
+          level[v] = i;
+          parent[v] = u;
+          next.push(v);
+        }
+        if (v === target){
+          // here I return the shortest route to the target node
+          let route = [v];
+          while (parent[v] !== start){
+            route.push(parent[v]);
+            v = parent[v];
+          }
+          return route.reverse();
+        }
+      }
+    }
+    frontier = next;
+    i += 1;
+  }
+}
+
+/*
+  the above will find a location using findShortestPath, but now we 
+  need to store a route for each possiblity. Use MITOCW notes
+
+  findShortestPath(village, 'Post Office', "Bob's House"); // WORKS!!
+
+  now, use routeRobot combined with the route found by findShortestPath 
+  in order to tell the robot where to go for each parcel.
+
+  figure out how to combine findShortestPath with the below logic - DONE!
+
+  prioritize pickup up / dropping off packages at locations that are closest to 
+  you..
+
+  - PSEUDOCODE FOR THE ABOVE: -
+  1. Before moving the robot, compare all packages that you are not currently carrying
+  toPickup = parcels.filter(stateParcel => stateParcel.place !== state.place );
+  toDeliver = parcels.filter(parcel => parcel.place === place);
+  2. Use the results of that 
+*/
+
+function BFSRobot({place, parcels}, route, graph) {
+  let toPickup = parcels.filter(parcel => parcel.place !== place);
+  toPickup.sort((a,b)=>{
+    return findNodeLevel(graph, place, a.place) - findNodeLevel(graph, place, b.place);
+  })
+  let toDeliver = parcels.filter(parcel => parcel.place === place);
+  toDeliver.sort((a,b)=>{
+    return findNodeLevel(graph, place, a.address) - findNodeLevel(graph, place, b.address);
+  })
+  if (route.length == 0) {
+    parcel = toPickup.length !== 0 ? toPickup[0] : toDeliver[0];
+    if (toPickup.length !== 0) {
+      route = findShortestPath(graph, place, parcel.place);
+    } else {
+      route = findShortestPath(graph, place, parcel.address);
+    }
+  }
+  return {direction: route[0], memory: route.slice(1)};
+}
+
+// figure out how to prioritize picking up parcels over delivering them:
+// Example: pick up all parcels as the first priority, after you have them
+// then make delivering them the priority. DONE!!
+
+compareRobots(village, BFSRobot, [], routeRobot, mailRoute) // WORKS!!
+
+/*
+  FINISHED!!! 
+  The BFSRobot is now faster than the goalOrientedRobot when delivering
+  5 packages, (~13.5 vs ~15 steps) && 100 packages (~27 vs ~31.5 steps) up to 100000
+  packages (~28 v 33 steps). 
+
+  FINISHED!!! 
+  Another idea to make this robot faster is
+  to sort the packages that are to be picked up by how close they are to the robot
+  currently instead of blindly going to whatever package comes first in the not
+  picked up list. You can do this by using the node's level (# of steps away from current
+  point) to sort the packages.
+
+  This makes the robot about 3 steps faster than it was previously:
+  (~12 v 13.5 steps) for 5 packages
+  (~24 v 27 steps) for 100 packages
+
+  ** current algorithm is very slow when running for 100000 packages **
+
+*/
+
+function findNodeLevel(graph, start, target) {
+  let level = {[start]: 0};
+  let parent = {[start]: null};
+  let i = 1;
+  let frontier = [start];
+  while (frontier.length !== 0){
+    let next = [];
+    for(let u of frontier){
+      for(let v of graph[u]){
+        if (level[v] === undefined){
+          level[v] = i;
+          parent[v] = u;
+          next.push(v);
+        }
+        if (v === target){
+          return i;
+        }
+      }
+    }
+    frontier = next;
+    i += 1;
+  }
+}
 
