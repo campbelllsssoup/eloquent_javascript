@@ -1,4 +1,4 @@
-// Exercise 8-2: The Locked Box : NOT DONE...
+// Exercise 8-2: The Locked Box : DONE!!!
 
 /*
     Consider the following (rather contrived) object:

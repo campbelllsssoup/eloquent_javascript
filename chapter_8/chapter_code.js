@@ -32,22 +32,21 @@
   about our program before it does something we don't expect it to.
 */
 
-// CODE
-// function canYouSpotTheProblem() {
-//   'use strict';
-//   // to fix, simply instantiate counter with let, var, or const
-//   let counter = 0;
-//   for (let counter = 0;counter < 10; counter++){
-//     console.log("Happy happy");
-//   }
-//   while (counter < 10){
-//     console.log("who needs non-strict mode?!?!");
-//     counter++;
-//   }
-// }  
+function canYouSpotTheProblem() {
+  'use strict';
+  // to fix, simply instantiate counter with let, var, or const
+  let counter = 0;
+  for (let counter = 0;counter < 10; counter++){
+    console.log("Happy happy");
+  }
+  while (counter < 10){
+    console.log("who needs non-strict mode?!?!");
+    counter++;
+  }
+}  
 
-// canYouSpotTheProblem();
-// console.log(globalThis);
+canYouSpotTheProblem();
+console.log(globalThis);
 
 /*
   In the above function, the issue is that when you supply the 
@@ -76,21 +75,21 @@
   reading your program of where the variable in question comes from.
 */
 
-// CODE
-// function whatIsThisNonStrict() {
-//   console.log(this);
-//   return this;
-// }
 
-// function whatIsThisStrict() {
-//   "use strict";
-//   console.log(this);
-//   return this;
-// }
+function whatIsThisNonStrict() {
+  console.log(this);
+  return this;
+}
 
-// whatIsThisNonStrict(); //=> globalThis value (window in browser, 
-// nodeJS module in Node.js environment)
-// whatIsThisStrict(); //=> undefined
+function whatIsThisStrict() {
+  "use strict";
+  console.log(this);
+  return this;
+}
+
+whatIsThisNonStrict(); //=> globalThis value (window in browser, 
+nodeJS module in Node.js environment)
+whatIsThisStrict(); //=> undefined
 
 
 /*
@@ -102,26 +101,25 @@
   against polluting the global namespace.
 */
 
-// CODE
-// const iAmBound = () => {
-//   "use strict";
-//   console.log('arrow function declaration:', this);
-// }
+const iAmBound = () => {
+  "use strict";
+  console.log('arrow function declaration:', this);
+}
 
-// function iAmUnbound() {
-//   "use strict";
-//   console.log('normal function declaration:', this);
-// }
+function iAmUnbound() {
+  "use strict";
+  console.log('normal function declaration:', this);
+}
 
-// let arrowObj = {a: 'a', iAmBound}
-// let normalObj = {b: 'b', iAmUnbound}
-// iAmBound(); //=> arrow function declaration: {}
-// iAmUnbound(); //=> normal function declaration: undefined
+let arrowObj = {a: 'a', iAmBound}
+let normalObj = {b: 'b', iAmUnbound}
+iAmBound(); //=> arrow function declaration: {}
+iAmUnbound(); //=> normal function declaration: undefined
 
-// iAmBound.call(arrowObj); //=> arrow function declaration: {}
-// arrowObj.iAmBound(); //=> arrow function declaration: {}
+iAmBound.call(arrowObj); //=> arrow function declaration: {}
+arrowObj.iAmBound(); //=> arrow function declaration: {}
 
-// normalObj.iAmUnbound(); //=> normal function declaration: {b: 'b', iAmUnbound: [Function: iAmUnbound]}
+normalObj.iAmUnbound(); //=> normal function declaration: {b: 'b', iAmUnbound: [Function: iAmUnbound]}
 
 /*
   In non-strict and strict mode, calling iAmBound will output an empty 
@@ -155,14 +153,13 @@
   program.
 */
 
-// CODE
-// function Person(name) { this.name = name; };
+function Person(name) { this.name = name; };
 // forgot to use the 'new' keyword, so the below code binds a variable 'name' to the global object 
-// let ferdinand = Person("Ferdinand"); // to fix use the 'new' keyword before the constructor function
-// console.log(name); //=> Ferdinand
-// console.log(ferdinand) //=> undefined
-// console.log(globalThis.name); //=> Ferdinand
-// console.log(globalThis.name === name); //=> true
+let ferdinand = Person("Ferdinand"); // to fix use the 'new' keyword before the constructor function
+console.log(name); //=> Ferdinand
+console.log(ferdinand) //=> undefined
+console.log(globalThis.name); //=> Ferdinand
+console.log(globalThis.name === name); //=> true
 
 /*
   In strict mode, the interpreter will throw an error:
@@ -186,10 +183,9 @@
   top of the file when needed, such as to play around with the piece of code below.
 */
 
-// CODE
-// function Person(name) { this.name = name; }
-// let ferdinand = Person('ferdinand');
-// console.log(ferdinand);
+function Person(name) { this.name = name; }
+let ferdinand = Person('ferdinand');
+console.log(ferdinand);
 
 // 2. Types
 
@@ -255,30 +251,30 @@ test("don't convert case-less characters", () => {
 
 // 4. Debugging
 
-// CODE
-// function numberToString(n, base = 10){
-//   let result = '', sign = '';
-//   if (n < 0) {
-//     sign = '-';
-//     n = -n;
-//   }
-//   do {
-//     // console.log(String(n % base)); //=> initially n is a long float - I expected it to be the 
-//     // next digit that I want to add to the result string.
 
-//     // String(n % base) produces 3 as expected the first time around, second
-//     // time around we get unexpected behavior as the result is 1.3 instead of 1..
-//     // I suppose I can just round 1.3 down to get to the next digit in the number and
-//     // set the result of that calculation to be the new n.
+function numberToString(n, base = 10){
+  let result = '', sign = '';
+  if (n < 0) {
+    sign = '-';
+    n = -n;
+  }
+  do {
+    // console.log(String(n % base)); //=> initially n is a long float - I expected it to be the 
+    // next digit that I want to add to the result string.
 
-//     result = String(n % base) + result;
-//     // console.log(Math.floor(n / base)); // WORKS!!
-//     n = Math.floor(n / base);
-//   } while (n > 0);
-//   return sign + result;
-// }
+    // String(n % base) produces 3 as expected the first time around, second
+    // time around we get unexpected behavior as the result is 1.3 instead of 1..
+    // I suppose I can just round 1.3 down to get to the next digit in the number and
+    // set the result of that calculation to be the new n.
 
-// // console.log(numberToString(13, 10));
+    result = String(n % base) + result;
+    // console.log(Math.floor(n / base)); // WORKS!!
+    n = Math.floor(n / base);
+  } while (n > 0);
+  return sign + result;
+}
+
+console.log(numberToString(13, 10));
 
 /*
   The above function doesn't return what you'd expect it to, instead of returning
@@ -319,19 +315,18 @@ test("don't convert case-less characters", () => {
   on what you're working on.
 */
 
-// CODE
-// function promptNumber(question){
-//   let result = Number(prompt(question));
-//   if (Number.isNaN(result)) {
-//     return promptNumber(question);
-//   } else {
-//     return result;
-//   }
-// }
+function promptNumber(question){
+  let result = Number(prompt(question));
+  if (Number.isNaN(result)) {
+    return promptNumber(question);
+  } else {
+    return result;
+  }
+}
 
-// let age = promptNumber("How old are you?");
-// let header = document.querySelector('h1');
-// header.innerHTML += ` ${age}`;
+let age = promptNumber("How old are you?");
+let header = document.querySelector('h1');
+header.innerHTML += ` ${age}`;
 
 /*
   The above code asks a user for their age, and if they enter anything that is 
@@ -341,20 +336,19 @@ test("don't convert case-less characters", () => {
   piece of text that says "Your age: "
 */
 
-// CODE
-// function lastElement(array){
-//   if (array.length == 0){
-//     return {failed: true};
-//   } else {
-//     return {element: array[array.length - 1]};
-//   }
-// }
+function lastElement(array){
+  if (array.length == 0){
+    return {failed: true};
+  } else {
+    return {element: array[array.length - 1]};
+  }
+}
 
-// let arr = [1,2,3];
-// let emptyArr = [];
+let arr = [1,2,3];
+let emptyArr = [];
 
-// console.log(lastElement(arr)['element'])
-// console.log(lastElement(emptyArr)['failed'])
+console.log(lastElement(arr)['element'])
+console.log(lastElement(emptyArr)['failed'])
 
 /*
   The above function handles the case where an input / result can be any datatype -
@@ -391,36 +385,35 @@ test("don't convert case-less characters", () => {
   program to continue running as normal, EVEN THOUGH it encountered an error.
 */
 
-// CODE
-// function promptDirection(question){
-//   let result = prompt(question);
-//   if (result.toLowerCase() == 'left'){
-//     return "L";
-//   } else if (result.toLowerCase() == 'right'){
-//     return "R";
-//   } else {
-//     throw new Error("Invalid direciton: " + result);
-//   }
-// }
+function promptDirection(question){
+  let result = prompt(question);
+  if (result.toLowerCase() == 'left'){
+    return "L";
+  } else if (result.toLowerCase() == 'right'){
+    return "R";
+  } else {
+    throw new Error("Invalid direciton: " + result);
+  }
+}
 
-// function look(){
-//   let youSee = document.querySelector('p')
-//   if(promptDirection("Which way? (Type 'right' or 'left')") == "L"){
-//     youSee.innerHTML += 'a house';
-//     return 'a house';
-//   } else {
-//     youSee.innerHTML += 'two angry bears';
-//     return 'two angry bears';
-//   }
-// }
+function look(){
+  let youSee = document.querySelector('p')
+  if(promptDirection("Which way? (Type 'right' or 'left')") == "L"){
+    youSee.innerHTML += 'a house';
+    return 'a house';
+  } else {
+    youSee.innerHTML += 'two angry bears';
+    return 'two angry bears';
+  }
+}
 
-// try {
-//   console.log("You see", look());
-// } catch (error) {
-//   let youSee = document.querySelector('p');
-//   youSee.innerHTML += 'a cliff edge';
-//   console.log("Something went wrong... ", + error);
-// }
+try {
+  console.log("You see", look());
+} catch (error) {
+  let youSee = document.querySelector('p');
+  youSee.innerHTML += 'a cliff edge';
+  console.log("Something went wrong... ", + error);
+}
 
 // 7. Cleaning Up After Exceptions
 
@@ -429,12 +422,11 @@ test("don't convert case-less characters", () => {
   regardless of whether an error was thrown or not.
 */
 
-// CODE
-// const account = {
-//   a: 100,
-//   b: 0,
-//   c: 20
-// }
+const account = {
+  a: 100,
+  b: 0,
+  c: 20
+}
 
 function getAccount() {
   let accountName = prompt("Enter an account name:");
@@ -444,11 +436,11 @@ function getAccount() {
   return accountName;
 }
 
-// function transfer(from, amount) {
-//   if (accounts[from] < amount) return;
-//   accounts[from] -= amount;
-//   accounts[getAccount()] += amount;
-// }
+function transfer(from, amount) {
+  if (accounts[from] < amount) return;
+  accounts[from] -= amount;
+  accounts[getAccount()] += amount;
+}
 
 /*
   The issue with the above code is that in the transfer function, money is taken
