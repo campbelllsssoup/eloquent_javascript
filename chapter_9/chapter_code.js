@@ -11,9 +11,8 @@
     slashes (re2).
 */
 
-// CODE
-// let re1 = new RegExp('abc');
-// let re2 = /abc/;
+let re1 = new RegExp('abc');
+let re2 = /abc/;
 
 /*
     In order to include special characters as an actual char
@@ -22,8 +21,8 @@
     Special character examples: . } { ^ ? + * ) ( | - ] [ 
 */
 
-// CODE
-// let eighteenPlus = /eighteen\+/;
+
+let eighteenPlus = /eighteen\+/;
 
 
 
@@ -36,9 +35,9 @@
     true if there is and false if there is not.
 */
 
-// CODE
-// console.log(/abc/.test("abcde")); //=> true
-// console.log(/abc/.test("abxde")); //=> false
+
+console.log(/abc/.test("abcde")); //=> true
+console.log(/abc/.test("abxde")); //=> false
 
 
 
@@ -53,10 +52,10 @@
     way such as /[0123456789]/ - but that's pretty ugly.
 */
 
-// CODE
-// console.log(/[0123456789]/.test("in 1992")); //=> true
 
-// console.log(/[0-9]/.test("in 1992")); //=> true
+  console.log(/[0123456789]/.test("in 1992")); //=> true
+
+  console.log(/[0-9]/.test("in 1992")); //=> true
 
 /*
     Shorthand character classes:
@@ -73,11 +72,11 @@
     . - any character except newline ;
 */
 
-// CODE
-// let dateTime = /\d\d-\d\d-\d\d\d\d \d\d:\d\d/;
-// console.log(dateTime.test("01-30-2003 15:20")); //=> true
 
-// console.log(dateTime.test("30-jan-2003 15:20")); //=> false
+  let dateTime = /\d\d-\d\d-\d\d\d\d \d\d:\d\d/;
+  console.log(dateTime.test("01-30-2003 15:20")); //=> true
+
+  console.log(dateTime.test("30-jan-2003 15:20")); //=> false
 
 /*
     The above way we have implemented a test for dateTime is not the
@@ -93,11 +92,11 @@
     means something completely different).
 */
 
-// // CODE
-// let notBinary = /[^01]/;
-// console.log(notBinary.test("1100100010100110")); //=> false
 
-// console.log(notBinary.test("1100100010200110")); //=> true
+let notBinary = /[^01]/;
+console.log(notBinary.test("1100100010100110")); //=> false
+
+console.log(notBinary.test("1100100010200110")); //=> true
 
 
 
@@ -113,14 +112,14 @@
     Example: /\d+/ matches one or more digit chars
 */
 
-// CODE
-// console.log(/'\d+'/.test("'123'")); //=> true
 
-// console.log(/'\d+'/.test("''")); //=> false
+console.log(/'\d+'/.test("'123'")); //=> true
 
-// console.log(/'\d*'/.test("'123'")); //=> true
+console.log(/'\d+'/.test("''")); //=> false
 
-// console.log(/'\d*'/.test("''")); //=> true
+console.log(/'\d*'/.test("'123'")); //=> true
+
+console.log(/'\d*'/.test("''")); //=> true
 
 
 /*
@@ -131,14 +130,14 @@
     one instance and NO MORE THAN THAT).
 */
 
-//CODE
 
-// let neighbor = /neighbou?r/;
-// console.log(neighbor.test("neighbor")); //=> true
 
-// console.log(neighbor.test("neighbour")); //=> true
+let neighbor = /neighbou?r/;
+console.log(neighbor.test("neighbor")); //=> true
 
-// console.log(neighbor.test("neighbouur")); //=> false
+console.log(neighbor.test("neighbour")); //=> true
+
+console.log(neighbor.test("neighbouur")); //=> false
 
 /*
     You can also specify precisely how many times a character / 
@@ -156,22 +155,23 @@
     to indicate a lower min. Doesn't work the same way as max.
 */
 
-// CODE 
-// let dateTime = /\d{1,2}-\d{1,2}-\d{4} \d{1,2}:\d{2}/;
 
-// console.log(dateTime.test("1-30-2003 8:45")); //=> true
+let dateTime = /\d{1,2}-\d{1,2}-\d{4} \d{1,2}:\d{2}/;
 
-// console.log(dateTime.test("1-30-97 9:14")); //=> false
+console.log(dateTime.test("1-30-2003 8:45")); //=> true
 
-// console.log(dateTime.test("11-1-1999 23:59")); //=> true
+console.log(dateTime.test("1-30-97 9:14")); //=> false
 
-// console.log(dateTime.test("01-5-1665 10:0")); //=> false
+console.log(dateTime.test("11-1-1999 23:59")); //=> true
 
-// let minElevenNum = /\d{11,}/;
-// let maxFiveNum = /\d{1,5}/;
-// let minFiveNum = /\d{5,}/;
+console.log(dateTime.test("01-5-1665 10:0")); //=> false
 
-// console.log(maxFiveNum.test("1234567890")); //=> true
+let minElevenNum = /\d{11,}/;
+let maxFiveNum = /\d{1,5}/;
+let minFiveNum = /\d{5,}/;
+
+console.log(maxFiveNum.test("1234567890")); //=> true
+
 // /* 
 //   at first you may think that the above doesn't work correctly and 
 //   it should return false because you're testing it on a string that has
@@ -183,13 +183,13 @@
 //   false 
 // */
 
-// console.log(minElevenNum.test("1234567890")); //=> false
+console.log(minElevenNum.test("1234567890")); //=> false
 
-// console.log(minFiveNum.test("1234")); //=> false
+console.log(minFiveNum.test("1234")); //=> false
 
-// console.log(maxFiveNum.test("123")); //=> true 
+console.log(maxFiveNum.test("123")); //=> true 
 
-// console.log(minFiveNum.test("12345")); //=> true
+console.log(minFiveNum.test("12345")); //=> true
 
 
 
@@ -204,17 +204,16 @@
     can work on it as such.
 */
 
-// CODE
 
-// let cartoonCrying = /boo+(hoo+)+/i;
+let cartoonCrying = /boo+(hoo+)+/i;
 
-// console.log(cartoonCrying.test("Boohoooohoohooo")); //=> true
-// console.log(cartoonCrying.test("Booho")); //=> false
-// console.log(cartoonCrying.test("boooohoooooo")); //=> true
-// console.log(cartoonCrying.test("Boho")); //=> false
-// console.log(cartoonCrying.test("Boohooalsdjf;a")); //=> true
-// console.log(cartoonCrying.test("boohoooohoohooooo")); //=> true
-// console.log(cartoonCrying.test('BOOOHOOOHOOHOOO')); //=> true
+console.log(cartoonCrying.test("Boohoooohoohooo")); //=> true
+console.log(cartoonCrying.test("Booho")); //=> false
+console.log(cartoonCrying.test("boooohoooooo")); //=> true
+console.log(cartoonCrying.test("Boho")); //=> false
+console.log(cartoonCrying.test("Boohooalsdjf;a")); //=> true
+console.log(cartoonCrying.test("boohoooohoohooooo")); //=> true
+console.log(cartoonCrying.test('BOOOHOOOHOOHOOO')); //=> true
 
 /*
   the above matches with 'boo' followed by at least a 'hoo' - 'boohoo' -
@@ -243,12 +242,12 @@
     The match object also contains properties like 'input'.
 */
 
-// CODE 
-// let match = /\d+/.exec("one two 100");
 
-// console.log(match); //=> ['100', index: 8, input: 'one two 100', groups: undefined]
+let match = /\d+/.exec("one two 100");
 
-// console.log(match.index); //=> 8
+console.log(match); //=> ['100', index: 8, input: 'one two 100', groups: undefined]
+
+console.log(match.index); //=> 8
 
 /*
     If the RegEx contains subexpressions in the form of groups, then they will
@@ -262,15 +261,15 @@
     to extract that data.
 */
 
-// CODE
+let quotedText = /'([^']*)'/; 
 
-// let quotedText = /'([^']*)'/; 
+/*
+  the regex above matches any text inside of single quotes 
+  that is not an ending quote and matches it until it reaches a single quote - 
+  it also organizes the text inside of single quotes into a group.
+*/
 
-// // the regex above matches any text inside of single quotes 
-// // that is not an ending quote and matches it until it reaches a single quote - 
-// // it also organizes the text inside of single quotes into a group.
-
-// console.log(quotedText.exec("she said 'hello'.")); //=> ["'hello'", 'hello', index: 9, etc..]
+console.log(quotedText.exec("she said 'hello'.")); //=> ["'hello'", 'hello', index: 9, etc..]
 
 /*
     When a group isn't matched at all, it's position in the array will
@@ -280,9 +279,9 @@
     match ends up in the array.
 */
 
-// CODE
-// console.log(/bad(ly)?/.exec("lo-bad")); //=> ['bad', undefined, index: 3]
-// console.log(/(\d)+/.exec("a123")); //=> ['123', '3', index: 1]
+
+console.log(/bad(ly)?/.exec("lo-bad")); //=> ['bad', undefined, index: 3]
+console.log(/(\d)+/.exec("a123")); //=> ['123', '3', index: 1]
 
 
 
@@ -325,14 +324,14 @@
     included.
 */
 
-// CODE
-// console.log(new Date()); //=> will output the current time
 
-// console.log(new Date(2009, 11, 9));//=> will output the DateTime of Dec 9, 2009
+console.log(new Date()); //=> will output the current time
 
-// console.log(new Date(2009, 11, 9).toDateString()); //=> Wed Dec 09 2009
+console.log(new Date(2009, 11, 9));//=> will output the DateTime of Dec 9, 2009
 
-// console.log(new Date(2009, 11, 9, 12, 59, 59, 999));
+console.log(new Date(2009, 11, 9).toDateString()); //=> Wed Dec 09 2009
+
+console.log(new Date(2009, 11, 9, 12, 59, 59, 999));
 
 /*
     A DateTime / timestamp is stored as an integer that is the number of seconds 
@@ -353,23 +352,22 @@
     You can also use .toDateString if you're only interested in the Date.
 */
 
-// CODE
-// console.log(new Date(2013, 11, 19).getTime()); //=> 1387440000000 (Number)
+console.log(new Date(2013, 11, 19).getTime()); //=> 1387440000000 (Number)
 
-// console.log(new Date(1387440000000)); //=> returns a date object that represents Dec 19, 2013
+console.log(new Date(1387440000000)); //=> returns a date object that represents Dec 19, 2013
 
-// console.log(Date.now()) //=> returns the current unix time (1575387480630)
+console.log(Date.now()) //=> returns the current unix time (1575387480630)
 
-// console.log(new Date().getTime()); //=> also returns the current unix time
+console.log(new Date().getTime()); //=> also returns the current unix time
 
-// console.log(new Date().getTime() === Date.now()) //=> true
+console.log(new Date().getTime() === Date.now()) //=> true
 
-// function getDate(string){
-//     let [_, month, day, year] = /(\d{1,2})-(\d{1,2})-(\d{4})/.exec(string);
-//     return new Date(year, month - 1, day);
-// }
+function getDate(string){
+    let [_, month, day, year] = /(\d{1,2})-(\d{1,2})-(\d{4})/.exec(string);
+    return new Date(year, month - 1, day);
+}
 
-// console.log(getDate("01-30-1997")); //=> returns a Date object for this date
+console.log(getDate("01-30-1997")); //=> returns a Date object for this date
 
 
 
@@ -390,10 +388,9 @@
     /W on the other
 */
 
-// CODE
-// console.log(/cat/.test("concatenate")); //=> true
+console.log(/cat/.test("concatenate")); //=> true
 
-// console.log(/^cat/.test("concatenate")) //=> false
+console.log(/^cat/.test("concatenate")) //=> false
 
 // 9. Choice Patterns
 
@@ -403,12 +400,12 @@
     grouping.
 */
 
-// let animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
+let animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
 
-// console.log(animalCount.test("15 pigs")); //=> true
-// console.log(animalCount.test("15 chickens")); //=> true
-// console.log(animalCount.test("1 cow")); //=> true
-// console.log(animalCount.test("15 pigchickens")); //=> false
+console.log(animalCount.test("15 pigs")); //=> true
+console.log(animalCount.test("15 chickens")); //=> true
+console.log(animalCount.test("1 cow")); //=> true
+console.log(animalCount.test("15 pigchickens")); //=> false
 
 
 // 10. The Mechanics of Matching
@@ -433,16 +430,16 @@
     NOTE: the String.prototype.replace method is non-destructive.
 */
 
-// CODE
-// replaces the first occurrence of p with a m.
-// console.log('papa'.replace('p', 'm')); //=> 'mapa'
 
-// // replaces all occurences of p with a m.
-// console.log('papa'.replace(/p/g, 'm')); //=> 'mama'
+replaces the first occurrence of p with a m.
+console.log('papa'.replace('p', 'm')); //=> 'mapa'
 
-// console.log("Borobudur".replace(/[ou]/, "a")); //=> Barobudur
+// replaces all occurences of p with a m.
+console.log('papa'.replace(/p/g, 'm')); //=> 'mama'
 
-// console.log("Borobudur".replace(/[ou]/g, "a")); //=> Barabadar
+console.log("Borobudur".replace(/[ou]/, "a")); //=> Barobudur
+
+console.log("Borobudur".replace(/[ou]/g, "a")); //=> Barabadar
 
 /*
     Where the replace method gets really interesting is when you begin to
@@ -454,8 +451,8 @@
     referred to by using $& 
 */
 
-// CODE
-// console.log("Liskov, Barbara\nMcCarthy, John\nWadler, Philip".replace(/(\w+), (\w+)/g, "$2 $1"));
+
+console.log("Liskov, Barbara\nMcCarthy, John\nWadler, Philip".replace(/(\w+), (\w+)/g, "$2 $1"));
 
 
 /*
@@ -469,28 +466,28 @@
     The replace method will provide these arguments to your custom callback.
 */
 
-// CODE
-// let s = "the cia and fbi";
 
-// console.log(s.replace(/\b(fbi|cia)\b/g, function(match){
-//     return match.toUpperCase();
-// }));
+let s = "the cia and fbi";
 
-// let stock = "1 lemon, 2 cabbages, and 101 eggs";
+console.log(s.replace(/\b(fbi|cia)\b/g, function(match){
+    return match.toUpperCase();
+}));
 
-// function minusOne(match, amount, item){
-//   amount = Number(amount) - 1; // turns the digit string to a number so that you can subtract one, and subtracts one.
-//   if (amount === 1){ // format the item to be singular if there's only one left
-//     item = item.slice(0, item.length - 1);
-//   } else if (amount === 0) {
-//     amount = "no";
-//   }
-//   return amount + " " + item;
-// }
+let stock = "1 lemon, 2 cabbages, and 101 eggs";
 
-// stock = stock.replace(/(\d+) (\w+)/g, minusOne);
+function minusOne(match, amount, item){
+  amount = Number(amount) - 1; // turns the digit string to a number so that you can subtract one, and subtracts one.
+  if (amount === 1){ // format the item to be singular if there's only one left
+    item = item.slice(0, item.length - 1);
+  } else if (amount === 0) {
+    amount = "no";
+  }
+  return amount + " " + item;
+}
 
-// console.log(stock); //=> no lemon, 1 cabbage, and 100 eggs
+stock = stock.replace(/(\d+) (\w+)/g, minusOne);
+
+console.log(stock); //=> no lemon, 1 cabbage, and 100 eggs
 
 
 
@@ -502,16 +499,16 @@
     this will lead to unexpected matches such as on line 514.
 */
 
-// CODE
-// function stripComments(code) {
-//   return code.replace(/\/\/.*|\/\*[^]*\*\//g, "");
-// }
 
-// console.log(stripComments("1 + /* 2  */3")); //=> 1 + 3
+function stripComments(code) {
+  return code.replace(/\/\/.*|\/\*[^]*\*\//g, "");
+}
 
-// console.log(stripComments("x = 10;// ten!")); //=> x = 10;
+console.log(stripComments("1 + /* 2  */3")); //=> 1 + 3
 
-// console.log(stripComments("1 /* a */+/* b */ 1")); //=> 1 1 (but we want 1 + 1 !)
+console.log(stripComments("x = 10;// ten!")); //=> x = 10;
+
+console.log(stripComments("1 /* a */+/* b */ 1")); //=> 1 1 (but we want 1 + 1 !)
 
 /*
     In the second option inside of the RegEx (the one that applies for multi-line
@@ -531,12 +528,12 @@
     regexes.
 */
 
-// CODE
-// function stripComments(code) {
-//     return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
-// }
 
-// console.log(stripComments("1 /* a */+/* b */ 1")) //=> 1 + 1
+function stripComments(code) {
+    return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
+}
+
+console.log(stripComments("1 /* a */+/* b */ 1")) //=> 1 + 1
 
 
 
@@ -561,12 +558,12 @@
     things after the regular expression itself like in slash (literal) notation.
 */
 
-// let name = "harry";
-// let text = "Harry is a suspicious character.";
+let name = "harry";
+let text = "Harry is a suspicious character.";
 
-// let regexp = new RegExp("\\b(" + name + ")\\b", "gi");
+let regexp = new RegExp("\\b(" + name + ")\\b", "gi");
 
-// console.log(text.replace(regexp, "_$1_")); //=> _Harry_ is a suspicious character.
+console.log(text.replace(regexp, "_$1_")); //=> _Harry_ is a suspicious character.
 
 /*
     But, what if a person's name contains characters that are special in regular
@@ -574,13 +571,13 @@
     the person's name and then use that escaped value in the regular expression itself.
 */
 
-// CODE
-// let name = "dea+hl[]rd";
-// let text = "This dea+hl[]rd guy is super annoying.";
-// let escaped = name.replace(/[\\[.+*?(){|^$]/g, "\\$&"); //=> dea\+hl\[]rd (all specialness of characters negated.)
-// console.log(escaped);
-// let regexp = new RegExp("\\b" + escaped + "\\b", 'gi');
-// console.log(text.replace(regexp, "_$&_")) //=> This _dea+hl[]rd_ guy is super annoying.
+
+let name = "dea+hl[]rd";
+let text = "This dea+hl[]rd guy is super annoying.";
+let escaped = name.replace(/[\\[.+*?(){|^$]/g, "\\$&"); //=> dea\+hl\[]rd (all specialness of characters negated.)
+console.log(escaped);
+let regexp = new RegExp("\\b" + escaped + "\\b", 'gi');
+console.log(text.replace(regexp, "_$&_")) //=> This _dea+hl[]rd_ guy is super annoying.
 
 
 
@@ -598,10 +595,10 @@
     point in the string, which can often be useful.
 */
 
-// CODE
-// looks for the first non-whitespace (\S) character in the string and returns the index
-// console.log("  word".search(/\S/)); //=> 2
-// console.log("    ".search(/\S/)); //=> -1
+
+looks for the first non-whitespace (\S) character in the string and returns the index
+console.log("  word".search(/\S/)); //=> 2
+console.log("    ".search(/\S/)); //=> -1
 
 
 
@@ -623,16 +620,16 @@
     the beginning of the string. 
 */
 
-// CODE
-// let pattern = /y.*/g;
-// // pattern.lastIndex = 3;
-// let match = pattern.exec("xyzzy");
-// console.log(match); //=> ['y']
-// console.log(match); // without setting lastIndex //=> 'yzzy'
-// console.log(match.index); //=> 4
-// console.log(pattern.lastIndex); //=> 5
-// pattern.lastIndex = 0;
-// console.log(pattern.exec("yzzy"));
+
+let pattern = /y.*/g;
+// pattern.lastIndex = 3;
+let match = pattern.exec("xyzzy");
+console.log(match); //=> ['y']
+console.log(match); // without setting lastIndex //=> 'yzzy'
+console.log(match.index); //=> 4
+console.log(pattern.lastIndex); //=> 5
+pattern.lastIndex = 0;
+console.log(pattern.exec("yzzy"));
 
 /*
     after .exec finds a match in the string it will set the lastIndex to the position in the string
@@ -642,21 +639,19 @@
 */
 
 
-// CODE
+let global = /abc/g;
+console.log(global.exec("xyz abc")); //=> ['abc']
 
-// let global = /abc/g;
-// console.log(global.exec("xyz abc")); //=> ['abc']
+let sticky = /abc/y;
+console.log(sticky.exec("xyz abc")); //=> null
 
-// let sticky = /abc/y;
-// console.log(sticky.exec("xyz abc")); //=> null
+let digit = /\d/g;
 
-// let digit = /\d/g;
-
-// console.log(digit.exec("here it is: 1")); //=> ['1']
-// // to fix the below execution of the digit regex, set the lastIndex property of the regex
-// // to 0
-// digit.lastIndex = 0;
-// console.log(digit.exec("and now: 1")); //=> null || ['1']
+console.log(digit.exec("here it is: 1")); //=> ['1']
+// to fix the below execution of the digit regex, set the lastIndex property of the regex
+// to 0
+digit.lastIndex = 0;
+console.log(digit.exec("and now: 1")); //=> null || ['1']
 
 
 /*
@@ -668,9 +663,9 @@
     calls to .replace and whenever you want to explicity use lastIndex. 
 */
 
-// console.log("Banana".match(/an/)) //=> match object - ['an', index: 1, input: "Banana", groups: undefined]
+console.log("Banana".match(/an/)) //=> match object - ['an', index: 1, input: "Banana", groups: undefined]
 
-// console.log("Banana".match(/an/g)) //=> ['an', 'an']
+console.log("Banana".match(/an/g)) //=> ['an', 'an']
 
 
 /*
@@ -678,16 +673,16 @@
     something similar to the following..
 */
 
-// CODE
-// let input = 'A string with 3 numbers in it... 42 and 88.';
-// let number = /\b\d+\b/g;
-// let match;
-// while (match = number.exec(input)) {
-//     console.log("Found", match[0], "at index", match.index);
-// }
-// // Found 3 at index 14
-// // Found 42 at index 33
-// // Found 88 at index 40
+
+let input = 'A string with 3 numbers in it... 42 and 88.';
+let number = /\b\d+\b/g;
+let match;
+while (match = number.exec(input)) {
+    console.log("Found", match[0], "at index", match.index);
+}
+// Found 3 at index 14
+// Found 42 at index 33
+// Found 88 at index 40
 
 
 // 16. Parsing an INI File
