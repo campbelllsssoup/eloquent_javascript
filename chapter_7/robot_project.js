@@ -267,7 +267,7 @@ function compareRobots(graph, robot1, robot1Mem, robot2, robot2Mem){
   let robot1Steps = 0;
   let robot2Steps = 0;
   for (let i=0; i < 100; i++){
-    let state = VillageState.random(graph, 5);
+    let state = VillageState.random(graph, 10);
     robot1Steps += runRobot(state, robot1, robot1Mem, graph);
     robot2Steps += runRobot(state, robot2, robot2Mem, graph);
   }
@@ -405,7 +405,7 @@ function BFSRobot({place, parcels}, route, graph) {
 // Example: pick up all parcels as the first priority, after you have them
 // then make delivering them the priority. DONE!!
 
-compareRobots(village, BFSRobot, [], routeRobot, mailRoute) // WORKS!!
+compareRobots(village, BFSRobot, [], goalOrientedRobot, []) // WORKS!!
 
 /*
   FINISHED!!! 
