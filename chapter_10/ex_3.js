@@ -1,4 +1,4 @@
-// Exercise 10-3: Circular Dependencies : NOT DONE...
+// Exercise 10-3: Circular Dependencies : DONE!!!
 
 /*
     A circular dependency is a situation where module A depends
@@ -19,4 +19,18 @@
     
     (2) What would go wrong when a module in a cycle does replace 
     its default exports object ?
+*/
+
+/*
+    1) The way cyclic dependencies are handled when using this syntax 
+    is that a dependency must wait to load its' own dependencies 
+    before the code is run. This works because 
+
+    2) IF a module replaces the default exports object, then 
+    then the dependencies of that module won't load correctly AND
+    the interface will not manifest itself how you expect it to.
+    
+    The golden rule is to just not to export functions / classes
+    as default exports, and instead properties to the export object.
+
 */
