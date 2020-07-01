@@ -15,49 +15,27 @@
 	should accept a single parameter (a positive, whole number) and return a Boolean.
 	Test in on 50 and 75. See how it behaves on -1. Why? Can you think of a way to fix
 	this?	
-*/
 
-isEven = (num) => {
+  I'm going to assume that the input will always be of the Number data type, 
+  and that that number is an integer.
+*/ 
 
-  numCopy = num;
-  if (typeof numCopy !== 'number') {
+const isEven = (n) => {
+  let nClone = Number(n);
 
-    throw new Error('Wrong datatype supplied. Provide a Number as an argument.');
-
-  } else {
-    
-    if (numCopy < 0) {
-      numCopy = String(numCopy);
-      numArr = numCopy.split('');
-      numArr.shift();
-      numCopy = Number(numArr.join(''));
-    }
-
-    while ( numCopy > 1 ) {
-      numCopy -= 2;
-    }
-
+  // handles negative inputs by removing the negative sign from the number.
+  if (n < 0) {
+    nClone = Math.abs(n);
   }
-  console.log(`Original Number: ${num}`);
-  result =  numCopy == 0 ? true : false;
-  console.log(`Result: ${result}`);
-  return result;
-
-}
-
-
-
-
-try {
-
-  isEven(50);
-  isEven(75);
-  // you may get funny behavior when using -1 as input
-  // can you find a way to fix this?
-  isEven(-100);
-  isEven('one-thousand');
-} catch(e) {
-
-  console.log(e);
   
+  // handles base cases (1 = odd, 0 = even) + recursive call
+  switch (nClone) {
+    case 0: return true;
+    case 1: return false;
+    default: return isEven(nClone - 2);
+  }
 }
+
+console.log(isEven(50)); //=> true
+console.log(isEven(75)); //=> false
+console.log(isEven(-100)); //=> true
