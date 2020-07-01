@@ -1,4 +1,4 @@
-// Exercise 1-1: Looping a Triangle : DONE!!!
+// Exercise 2-1: Looping a Triangle : DONE!!!
 
 /*
 	Write a loop that makes seven calls to console.log to output the following triangle:
