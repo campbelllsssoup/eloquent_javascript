@@ -14,11 +14,11 @@
 	-----------------------------------------------------------------------------------
 */
 
-loopTriangle = function() {
-  pound = '#';
-  for (let i = 1; i <= 7; i++ ){
-    console.log(pound);
-    pound += '#';
+let loopTriangle = function() {
+  let hashes = '';
+  while (hashes.length < 7) {
+    hashes += '#';
+    console.log(hashes);
   }
   return undefined;
 }
