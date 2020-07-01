@@ -23,26 +23,19 @@
 
 */
 
-chessboard = (size) => {
-  for(let i = 0; i < size; i++){
-    str = '';
-    for(let j = 0; j < size; j++){
-      if (i % 2 === 0){
-        if (j % 2 === 0) {
-          str += ' ';
-        } else {
-          str += '#';
-        }
+let chessboard = function(size) {
+  let str = '';
+  for (let i = 0; i < size; i++){
+    for (let j = 0; j < size; j++){
+      if ( (i % 2 === 0 && j % 2 === 0) || (i % 2 === 1 && j % 2 === 1) ) { // if both numbers are odd, or both are even add space.
+        str += ' ';
       } else {
-        if (j % 2 === 1) {
-          str += ' ';
-        } else { 
-          str += '#';
-        }
+        str += '#';
       }
     }
-    console.log(str)
-  } 
+    str += '\n';
+  }
+  console.log(str);
 };
 
-chessboard(50)
+chessboard(8);
