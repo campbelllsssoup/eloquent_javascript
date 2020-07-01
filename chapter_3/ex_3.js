@@ -6,7 +6,7 @@
 	The returned value will be a string containing only one character (for example,
 	"b"). The first character has position 0, which causes the last one to be found
 	at position string.length - 1. In other words, a two-character string has length
-	2, and its character have positions 0 and 1.
+	2, and its characters have positions 0 and 1.
 
 	Write a function countBs that takes a string as its only argument and returns
 	a number that indicates how many uppercase "B" characters there are in the string.
@@ -18,44 +18,29 @@
 
 */
 
-countBs = (string) => {
-  countChar(string, "B");
+const countBs = (string) => {
+  return countChar(string, "B");
 }
 
-
-countChar = (string,char) => {
-
-  if (typeof string !== 'string') {
-    throw new Error('TypeError: This function only accepts a string as first and second arg.');
-  } else if (char.length !== 1) {
-    throw new Error('ArgumentError: The second argument can only be a single character.');
-  }
-
-  stringCopy = string;
-  stringArr = stringCopy.split('');
-  count = 0;
-
+// Assuming the first arg is a string & the second arg is only 1 char.
+const countChar = (string, char) => {
+  // initialize necessary variables
+  let stringCopy = string;
+  let stringArr = stringCopy.split('');
+  let count = 0;
+  
+  // Iterate through array of characters and count number of target characters.
   for(let i = 0; i < stringArr.length; i++) {
-    stringArr[i] === char ? count += 1 : undefined;
+    stringArr[i] === char && ( count += 1 );
   }
-
-  console.log(`There are ${count} ${char}'s in the string`);
+  
   return count;
-
 }
 
 
 try {
-
-  countBs('hello');
-  countBs("BaBBling Brooks brood over cool waters.");
-
-  // will throw Error
-  // countChar("lliejghsoll", "L");
-  // countChar(2345, 3);
-
+  console.log(countBs('hello')); //=> 0
+  console.log(countBs("BaBBling Brooks brood over cool waters.")); //=> 4
 } catch(e) {
-
   console.log(e);
-
 }
