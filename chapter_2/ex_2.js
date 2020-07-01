@@ -1,4 +1,4 @@
-// Exercise 1-2: FizzBuzz : DONE!!!
+// Exercise 2-2: FizzBuzz : DONE!!!
 
 /*
 
