@@ -6,24 +6,12 @@
 	the arguments. (Rebuild the Math.min() function)
 */
 
-
-minimum = (...nums) => {
-
-  if (nums.length <= 1) {
-    throw Error(`Given ${nums.length} arguments, expected 2..unlimited`);
-  } else {
-    let min = nums[0];
-    nums.forEach((currentNum) => { currentNum < min ? min = currentNum : undefined  });
-    console.log(min);
-  }
-
-  return undefined;
+const minimum = (...nums) => {
+  let min = nums[0];
+  nums.forEach(num => {
+    min = num < min ? num : min;
+  });
+  return min;
 }
 
-try {
-  minimum(12,2345,1,19038457,-934875);
-  minimum(12,11,1);
-} catch(e) {
-  console.error(e);
-}
-
+minimum(1,2,-11); //=> -11
