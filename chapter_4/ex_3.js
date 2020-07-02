@@ -1,4 +1,4 @@
-// Exercise 4-3: A List : NOT DONE...
+// Exercise 4-3: A List : DONE!!!
 
 /*
 
@@ -18,7 +18,7 @@
 	shown when given [1,2,3] as an argument. Also write a listToArray function
 	that produces an array from a list. 
 
-        Then add a helper function 'prepend',
+  Then add a helper function 'prepend',
 	which takes an element and a list and creates a new list that adds the 	
 	element to the front of the input list, and 'nth', which takes a list and 
 	returns the element at the given position in the list (with zero referring
@@ -28,86 +28,69 @@
 
 */
 
-arrayToList = (arr) => {
-  let arrCopy = Array.from(arr);
-  let list = {};
-
-  for(let i = arrCopy.length - 1; i >= 0; i--){
-    let newList = {};
-
-    if (Object.keys(list).length === 0) {
-      newList.data = arrCopy[i];
-      newList.pointer = undefined;
-    } else {
-      newList.data = arrCopy[i];
-      newList.pointer = list;
-    } 
-
-    list = newList;
-  }
-  
-  return list;
-}
-
-
-listToArray = (list) => {
-  let listCopy = {...list};
-  let arr = [];
-
-  while (listCopy.pointer !== undefined) {
-    arr.push(listCopy['data']);
-    listCopy = listCopy['pointer'];
-  }
-  arr.push(listCopy['data']);
-
-  return arr;
-}
-
-
-prepend = (element, list) => {
+// List.prototype.insertHead
+const prepend = (element, list) => {
   let newList = {data: element, pointer: list}
   return newList;
 }
 
-// If n === 0, then you are looking for the first element.
+// Array.toList
+const arrayToList = (arr) => {
+  let list = null;
+  for (let i = arr.length - 1; i > -1; i--) {
+    list = prepend(arr[i], list);
+  }
+  return list;
+}
 
-nth = (n, list) => {
-  let listCopy = {...list}
+// List.toArray
+const listToArray = (headNode) => {
+  let arr = [];
+  let currNode = headNode;
+  while (currNode.pointer) {
+    arr.push(currNode.data);
+    currNode = currNode.pointer;
+  }
+  arr.push(currNode.data);
+  return arr;
+}
 
-  for(let i = 0; i < n; i++) {
+// List.prototype.getAt
+const nth = (n, list) => {
+  if (!list) return null;
+  let listCopy = {...list};
+  for (let i = 0; i < n; i++) {
     listCopy = listCopy.pointer;
-    if (listCopy === undefined) return undefined;
+    if (!listCopy) return null;
   }
   return listCopy.data;
-
 }
 
-
-
-recursiveNth = (n, list) => {
-  console.log(`Current n`, n);
-  console.log(`Current list:`, list.pointer);
-
-  if (n === 0) {
+// List.prototype.getAt
+const recursiveNth = (n, list) => {
+  if (list === null) {
+    return null;
+  } else if (n === 0) {
     return list.data;
-  } else if (list === undefined) {
-    return undefined;
   } else {
-    list = list.pointer;
-    n -= 1;
-    return recursiveNth(n, list);
+    return recursiveNth(n - 1, list.pointer);
   }
 }
 
-
-
-
-
-let newNewList = arrayToList([1,2,3]);
-console.log(`[1,2,3] to list:`, newNewList);
-
-let secondData = recursiveNth(1, newNewList);
-let firstData = recursiveNth(0, newNewList);
-
-console.log(`Second Data, newNewList:`, secondData);
-console.log(`First Data, newNewList:`, firstData);
+// testing...
+let mattList =  { data: 'Hello', 
+                  pointer: {
+                    data: 'there', 
+                    pointer: {
+                      data: 'neighbor!',
+                      pointer: null
+                    }
+                  }
+                };
+let mattArr = ['Hello', 'there', 'neighbor!'];
+console.log( listToArray(mattList) ); //=> ['Hello', 'there', 'neighbor!']
+console.log( arrayToList(mattArr) ); //=> mattList
+console.log( nth(400, mattList) ); //=> null
+console.log( nth(2, mattList) ); //=> { data: 'neighbor!', pointer: null }
+console.log( recursiveNth(400, mattList) ); //=> null
+console.log( recursiveNth(2, mattList) ); //=> { data: 'neighbor!', pointer: null }
