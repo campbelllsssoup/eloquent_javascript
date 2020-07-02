@@ -18,82 +18,39 @@
 	The function call range(1,10,2) should return [1,3,5,7,9]. Make sure
 	it also works with negative step values so that range(5,2,-1) produces
 	[5,4,3,2].
+
+
+  Assume (#range):
+  - All arguments are numbers.
+  - For negative step values, end is less than start.
+  - For positive step values, end is greater than start.
+  - Step isn't equal to zero.
+  - Start isn't equal to end.
+
+
+  (#sum):
+  - assume that user will provide only an array of numbers as an argument.
+
 */
 
-// [start, end, step].some(checkForNonNums)
-
-
-range = (start, end, step = 1) => {
-  let rangeCollection = [];
-
-  if (typeof start !== 'number' || 
-      typeof end !== 'number' ||
-      typeof step !== 'number' ) {
-    throw new Error('ArgumentError: all arguments must be numbers.');  
-  } else if( step > 0 && start > end ) {
-    throw new Error('ArgumentError: for positive step values, start must be less than end.');
-  } else if( step < 0 && start < end ) {
-    throw new Error('ArgumentError: for negative step values, start must be greater than end.');
-  } else if( step === 0 ) {
-    throw new Error('ArgumentError: your third argument step may not be 0');
-  } else if ( start === end ) {
-    throw new Error('ArgumentError: start may not be equal to end.');
+const range = (start, end, step = 1) => {
+  let numRange = [];
+  if (step > 0) {
+    for (let num = start; num <= end; num += step) {
+      numRange.push(num);
+    }
   } else {
-
-    if (step > 0) {
-      for(let i = start; i <= end; i += step){
-        rangeCollection.push(i);
-      }
-    } else {
-      for(let i = start; i >= end; i += step){
-        rangeCollection.push(i);
-      }
+    for (let num = start; num >= end; num += step) {
+      numRange.push(num);
     }
   }
-  return rangeCollection;
+  return numRange;
 }
 
-function checkForNonNums(val) {
-  if (isNaN(val)) {
-    return true;
-  } else if (val === Infinity) {
-    return true;
-  } else if (val === -Infinity) {
-    return true;
-  } else {
-    return false;
-  }
+
+const sum = (arr) => {
+  return arr.reduce((arr, num) => arr + num);
 }
 
-numsOnly = (arr) => {
-  if (typeof arr !== 'object' || arr['length'] == undefined) {
-    throw new Error('ArguementError: You may only supply an array as an argument.');
-  } else {
-    for (i=0;i<arr.length;i++){
-      if (typeof arr[i] !== 'number') return false;
-      if (checkForNonNums(arr[i]) === true) return false;
-    }
-  }
-  return true;
-}
-
-sum = (arr, count = 0) => {
-  if (typeof arr !== 'object' || arr['length'] === undefined) {
-    throw new Error('ArgumentError: You may only supply an array as an argument.');
-  } else if (numsOnly(arr) === false) {
-    throw new Error('ArgumentError: Your array may only contain numbers as entries.');
-  } else {
-    for (i=0;i<arr.length;i++){
-      count += arr[i];
-    }
-  }
-  return count;
-}
-
-try {
-  console.log(range(1,10));
-  console.log(range(100,1,1));
-  console.log(sum(range(1,10)));
-} catch(e) {
-  console.log(e);
-}
+console.log( sum(range(5, 2, -1)) ); //=> 14
+console.log( sum(range(1, 10, 2)) ); //=> 25
