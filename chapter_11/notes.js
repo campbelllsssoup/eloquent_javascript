@@ -471,3 +471,5 @@ async function chicks(nest, year) {
 }
 
 chicks(bigOak, 2017).then(console.log); // => Big Oak: 1
+
+module.exports = { anyStorage, storage };
