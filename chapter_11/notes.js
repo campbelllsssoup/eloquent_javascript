@@ -111,11 +111,11 @@ defineRequestType('note', (nest, content, source, done) => {
   function.
 */
 
-// function storage(nest, name) {
-//   return new Promise(resolve => {
-//     nest.readStorage(name, result => resolve(result));
-//   });
-// }
+function storage(nest, name) {
+  return new Promise(resolve => {
+    nest.readStorage(name, result => resolve(result));
+  });
+}
 
 // storage(bigOak, "enemies")
 //   .then(value => console.log('Got -', value.join(', ')));
@@ -238,3 +238,236 @@ requestType('gossip', (nest, message, source) => {
   sendGossip(nest, message, source);
 })
 
+
+/*
+  Mapping out nodes in a network
+*/
+
+requestType('connections', (nest, {name, neighbors}, source) => {
+  let connections = nest.state.connections;
+  if (JSON.stringify(connections.get(name)) == JSON.stringify(neighbors)) return;
+  connections.set(name, neighbors);
+  broadcastConnections(nest, name, source);
+})
+
+const broadcastConnections = (nest, name, exceptFor = null) => {
+  for (let neighbor of nest.neighbors) {
+    if (neighbor == exceptFor) continue;
+    request(nest, neighbor, 'connections', { 
+      name, 
+      neighbors: nest.state.connections.get(name) 
+    })
+  }
+}
+
+everywhere(nest => {
+  nest.state.connections = new Map;
+  nest.state.connections.set(nest.name, nest.neighbors);
+  broadcastConnections(nest, nest.name);
+})
+
+/*
+  Finding a path to a node in a network
+*/
+
+const findRoute = (from, to, connections) => {
+  let work = [{at: from, via: null}];
+  for (let i = 0; i < work.length; i++) {
+    let {at, via} = work[i];
+    for (let next of connections.get(at) || []) {
+      if (next == to) return via;
+      if (!work.some(w => w.at == next)) {
+        work.push({at: next, via: via || next})
+      }
+    }
+  }
+  return null;
+}
+
+/*
+  Sending a message to another node
+*/
+
+const routeRequest = (nest, target, type, content) => {
+  if (nest.neighbors.includes(target)) {
+    return request(nest, target, type, content);
+  } else {
+    let via = findRoute(nest.name, target, nest.state.connections);
+    if (!via) throw new Error(`No route to ${target}`);
+    return request(nest, via, 'route', {target, type, content});
+  }
+}
+
+requestType('route', (nest, {target, type, content}) => {
+  return routeRequest(nest, target, type, content);
+})
+
+/*
+  Accessing information stored across nodes
+
+  note: the info may or may not be in any given node.
+*/
+
+requestType('storage', (nest, name) => storage(nest, name))
+
+const network = (nest) => {
+  return Array.from(nest.state.connections.keys());
+}
+
+const findInRemoteStorage = (nest, name) => {
+  let sources = network(nest).filter(n => n != nest.name);
+  const next = () => {
+    if (sources.length == 0) {
+      return Promise.reject(new Error("Not found"));
+    } else {
+      let source = sources[Math.floor(Math.random() * sources.length)];
+      sources = sources.filter(n => n != source);
+      return routeRequest(nest, source, 'storage', name)
+        .then(value => value != null ? value : next(), next);
+    }
+  }
+  return next;
+}
+
+// const findInStorage = (nest, name) => {
+//   return storage(nest, name)
+//           .then(found => {
+//             if (found != null) return found;
+//             else return findInRemoteStorage(nest, name);
+//           });
+// }
+
+
+
+
+/*
+  findInStorage async re-write
+*/
+
+const findInStorage = async(nest, name) => {
+  let local = await storage(nest, name);
+  if (local != null) return local;
+
+  let source = network(nest).filter(n => n != nest.name);
+  while (sources.length > 0) {
+    let source = sources[Math.floor(Math.random() * sources.length)];
+    sources = sources.filter(n => n != source);
+    try {
+      let found = await routeRequest(nest, source, 'storage', name);
+      if (found != null) return found;
+    } catch(_) {}
+  }
+  throw new Error("Not found");
+}
+
+/*
+  Generator functions
+*/
+
+// function* powers(n) {
+//   for (let current = n;; current *= n) {
+//     yield current;
+//   }
+// }
+
+// for (let power of powers(3)) {
+//   if (power > 50) break;
+//   console.log(power);
+// }
+
+/*
+  The Event Loop
+
+  You won't be able to catch errors of asynchronous code using the below pattern.
+  This is because by the time the Error is thrown, the try-catch block has already
+  run it's course.
+*/
+
+// try {
+//   setTimeout(() => { throw new Error("Woosh");}, 20);
+// } catch(_) {
+//   console.log('Will this run?');
+// }
+//=> Error: Woosh
+
+/*
+  The JS environment can only run one program at a time, and all asynchronous
+  callbacks get executed in the order they were added to the event loop.
+
+  The event loop is how we're actually allowed to simulate asynchronicity.
+
+  It's common to say that things run 'in the background' when we are describing
+  asynchronous programming in JS, but in truth we can think of these things being
+  'set in motion' instead of 'running', since JS only 'runs' one program at a time.
+*/
+
+/*
+  Slow running code may delay the handling of other events due to the above
+  facts.
+*/
+
+// let start = Date.now();
+// setTimeout(() => {
+//   console.log("Timeout ran at", Date.now() - start);
+// }, 20);
+// while (Date.now() < start + 50) {} // slow running code
+// console.log("Wasted time until", Date.now() - start);
+
+// => Wasted time until 50ms elapsed
+// => Timeout ran at 55ms elapsed
+
+
+/* 
+  That timeout was supposed to run its' block of code @ 20ms elapsed, but it 
+  executed after the script finished, causing an inaccurate timeout. 
+*/
+
+/*
+  Promises always reject or resolve as an event. Therefore, they are added to 
+  the event/callback queue just the same as any other asynchronous action, and
+  are executed only after the current script finishes.
+
+  We could say the asynchronous code runs after the current script finishes, 
+  or when the stack is clear of any frames.
+*/
+
+// Promise.resolve("Done").then(console.log);
+// console.log('Me first!');
+
+// => Me first!
+// => "Done"
+
+/*
+  The below will return only one line of results.
+  See book for details on why this happens.
+*/  
+
+function anyStorage(nest, source, name) {
+  if (source == nest.name) return storage(nest, name);
+  else return routeRequest(nest, source, 'storage', name);
+}
+
+// async function chicks(nest, year) {
+//   let list = '';
+//   await Promise.all(network(nest).map(async name => {
+//     list += `${name}: ${await anyStorage(nest, name, `chicks in ${year}`)}\n`;
+//   }));
+//   return list;
+// }
+
+/*
+  The below code is the proper way to handle the chicks function so that you 
+  get the results of all nests.
+
+  These last two sections deal with how to handle asynchronous gaps, like the
+  one that occurs in the first example. 
+*/
+
+async function chicks(nest, year) {
+  let lines = network(nest).map(async name => {
+    return `${name}: ${await anyStorage(nest, name, `chicks in ${year}`)}`;
+  });
+  return (await Promise.all(lines)).join("\n");
+}
+
+chicks(bigOak, 2017).then(console.log); // => Big Oak: 1
