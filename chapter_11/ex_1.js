@@ -26,21 +26,36 @@
 let { anyStorage, storage } = require('./notes.js');
 let { bigOak, nodes } = require('./crow-tech.js');
 
-async function locateScalpel(nest) {
-  let current = nest;
-  let next = await storage(nest, 'scalpel'); //=> "Gilles' Garden"
-  while(current.name != next) {
-    oldCurrent = current;
-    current = nodes[next];
-    //console.log(typeof current); //=> node
-    next = await anyStorage(oldCurrent, next, 'scalpel'); //=> 'Woods'
-  }
-  return current.name;
-}
+/*
+  async / await solution
+*/
 
-locateScalpel(bigOak); //=> 'Butcher Shop'
+// async function locateScalpel(nest) {
+//   let current = nest;
+//   let next = await storage(nest, 'scalpel'); //=> "Gilles' Garden"
+//   while (current.name != next) {
+//     oldCurrent = current;
+//     current = nodes[next];
+//     //console.log(typeof current); //=> node
+//     next = await anyStorage(oldCurrent, next, 'scalpel'); //=> 'Woods'
+//   }
+//   return current.name;
+// }
+
+// locateScalpel(bigOak).then(console.log); //=> 'Butcher Shop'
 
 
 /*
-  Skipped the synchronous version for now.
+  Non async/await solution.
+
+  Recursion is a life saver.
 */
+
+function locateScalpel(nest) {
+  return storage(nest, 'scalpel').then(next => {
+    if (next == nest.name) return nest.name;
+    return locateScalpel(nodes[next]);
+  })
+}
+
+locateScalpel(bigOak).then(console.log); //=> 'Butcher Shop'
