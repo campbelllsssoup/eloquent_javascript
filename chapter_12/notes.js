@@ -68,8 +68,6 @@ function parseExpression(program) {
 /* 
   The below handles constructing when the expression we're handling is an
   Application instead of a string, number, or word.
-
-  It 
 */
 
 function parseApply(expr, program) {
@@ -149,16 +147,15 @@ function evaluate(expr, scope) {
   if (expr.type == 'value') {
     return expr.value;
   } else if (expr.type == 'word') {
-    
     if (expr.name in scope) {
       return scope[expr.name];
     } else {
-      console.log(expr, scope);
       throw new ReferenceError(`Undefined binding: ${expr.name}`);
     }
   } else if (expr.type == 'apply') {
     let {operator, args} = expr;
     if (operator.type == 'word' && operator.name in specialForms) {
+      console.log(operator.name)
       return specialForms[operator.name](expr.args, scope);
     } else {
       let op = evaluate(operator, scope);
@@ -214,13 +211,13 @@ specialForms.define = (args, scope) => {
   The Environment
 */
 
-var topScope = Object.create(null);
+let topScope = Object.create(null);
 topScope.true = true;
 topScope.false = false;
 
 let prog = parse('if(true, false, true)');
 
-console.log(evaluate(prog, topScope)); //=> false
+// console.log(evaluate(prog, topScope)); //=> false
 
 // Define arithmetic operators in the topScope
 
@@ -228,14 +225,14 @@ for (let op of ['+','-','*','/','==','<','>']) {
   topScope[op] = Function('a, b', `return a ${op} b;`);
 }
 
-// Define 'console.log' or sysout.print 
+// Define print function
 
 topScope.print = (expr) => {
-  console.log(expr);
   return expr;
 }
 
 function run(program) {
+  // topScope is in scope here.
   return evaluate(parse(program), Object.create(topScope));
 }
 
@@ -274,8 +271,12 @@ specialForms.fun = (args, scope) => {
     }
     let localScope = Object.create(scope);
     for (let i = 0; i < arguments.length; i++) {
-      localSCope[params[i]] = arguments[i];
+      localScope[params[i]] = arguments[i];
     }
     return evaluate(body, localScope);
   }
 }
+
+
+
+
