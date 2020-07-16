@@ -1,4 +1,4 @@
-// Exercise 11-1: Tracking the Scalpel : NOT DONE...
+// Exercise 11-1: Tracking the Scalpel : DONE!!!
 
 /*
   The village crows own an old scalpel that they occasionally use on special 
