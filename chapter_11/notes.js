@@ -1,4 +1,4 @@
-// Chapter 11 Notes
+// Chapter 11 Notes - Asynchronous Programming
 let { bigOak, defineRequestType, everywhere } = require("./crow-tech");
 
 /*
