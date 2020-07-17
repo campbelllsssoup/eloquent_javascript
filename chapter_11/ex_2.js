@@ -25,7 +25,6 @@ function Promise_all(promises) {
           result[idx] = value;
           counter--;
           if (counter == 0) { 
-            {result, counter}
             resolve(result) 
           }
         })
