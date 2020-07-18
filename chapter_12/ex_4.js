@@ -1,4 +1,4 @@
-// Exercise 12-3: Fixing Scope : NOT DONE...
+// Exercise 12-3: Fixing Scope : DONE!!!
 
 /*
   Currently, the only way to assign a binding a value is define. This construct 
