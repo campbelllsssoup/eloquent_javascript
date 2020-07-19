@@ -1,0 +1,26 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 10</title>
+    </head>
+    <body>
+        <p style="text-align: center">
+          <img src='../images/cat.jpg' 
+               style='position: relative; height: 20vw; width: 20vw;
+                      margin-top: 30vh;' />
+        </p>
+        <script>
+          let cat = document.querySelector('img');
+          let angle = Math.PI / 2;
+          function animate(time, lastTime) {
+            if (lastTime != null) {
+              angle += (time - lastTime) * 0.001;
+            }
+            cat.style.top = (Math.sin(angle) * 100) + 'px';
+            cat.style.left = (Math.cos(angle) * 100) + 'px';
+            requestAnimationFrame(newTime => animate(newTime, time));
+          }
+          requestAnimationFrame(animate);
+        </script>
+    </body>
+</html>

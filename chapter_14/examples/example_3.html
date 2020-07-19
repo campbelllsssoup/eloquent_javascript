@@ -1,0 +1,40 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 3</title>
+    </head>
+    <body>
+        <img alt="Here's " src="../images/hat.jpg" />
+        <img alt="Johnny!" src="../images/cat.jpg" />
+
+        <script>
+          /* images is a 'live' data collection, which means changes
+          to the collection are reflected in real time. Due to this,
+          if you want to modify a live collection, you should count
+          from the back to the front. 
+          
+          For example, you have two images that are in the live collection.
+          If you start from the beginning and turn the image element node into
+          a text node, then the length of the list goes from 2 to 1 in real time.
+          
+          In turn, whenever you're trying to access the 2nd element in the 
+          collection, undefined will be returned because there is no longer
+          a second element.*/
+
+          // line 26 saves a NodeList into the images variable.
+          // nodeLists returned by #querySelectorAll are static.
+          // let images = document.querySelectorAll('img');
+          
+          // an HTMLCollection is saved into the images variable below.
+          // HTMLCollections are always live.
+          let images = document.getElementsByTagName("img");
+          for (let i = images.length - 1; i >= 0; i--) {
+            let image = images[i];
+            if (image.alt) {
+              let text = document.createTextNode(image.alt);
+              image.parentNode.replaceChild(text, image);
+            }
+          }
+        </script>
+    </body>
+</html>

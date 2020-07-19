@@ -25,8 +25,14 @@
   document. I usually will put the script tag at the bottom of the HTML page
   so that I can be sure all of the DOM content has loaded on the page already.
 
-  @ './first_script.html'
+  @ './script_one.html'
 
   
+*/
+
+/*
+  Including external JS files
+
+  @ './script_two.html'
 */
 

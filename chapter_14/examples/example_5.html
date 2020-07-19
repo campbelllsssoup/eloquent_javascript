@@ -1,0 +1,19 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 5</title>
+    </head>
+    <body>
+        <p data-classified='secret'>The launch code is 00000000.</p>
+        <p data-classified='unclassified'>I have two feet.</p>
+
+        <script>
+            let paras = document.querySelectorAll('p');
+            for (let para of [...paras]) {
+                if (para.dataset.classified == 'secret') {
+                    para.remove();
+                }
+            }
+        </script>
+    </body>
+</html>
