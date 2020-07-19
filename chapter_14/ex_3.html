@@ -21,8 +21,10 @@
     </head>
     <body>
         <style>body { min-height: 200px }</style>
-        <img src="img/cat.png" id="cat" style="position: absolute">
-        <img src="img/hat.png" id="hat" style="position: absolute">
+        <img src="./images/cat.jpg" id="cat" style="position: absolute; 
+        height: 100px; width: 100px; margin-top: 45vh; margin-left: 45vw;">
+        <img src="./images/hat.jpg" id="hat" style="position: absolute; 
+        height: 100px; width: 100px; margin-top: 45vh; margin-left: 45vw;">
 
         <script>
           let cat = document.querySelector("#cat");
@@ -33,10 +35,11 @@
           function animate(time) {
             if (lastTime != null) angle += (time - lastTime) * 0.001;
             lastTime = time;
-            cat.style.top = (Math.sin(angle) * 40 + 40) + "px";
-            cat.style.left = (Math.cos(angle) * 200 + 230) + "px";
-
-            // Your extensions here.
+            cat.style.top = (Math.sin(angle) * 100) + "px";
+            cat.style.left = (Math.cos(angle) * 100) + "px";
+            hat.style.top = (Math.cos(angle) * 250) + "px";
+            hat.style.left = (Math.sin(angle) * 250) + "px";
+            
 
             requestAnimationFrame(animate);
           }
