@@ -1,4 +1,4 @@
-<!-- Exercise 14-2: Elements by Tag Name : NOT DONE...
+<!-- Exercise 14-2: Elements by Tag Name : DONE!!!
 
   The document.getElementsByTagName method returns all child elements with a 
   given tag name. Implement your own version of this as a function that takes a 
@@ -22,7 +22,15 @@
         
         <script>
           function byTagName(node, tagName) {
-            // Your code here.
+            let matches = [];
+            for (let child of node.children) {
+              if (child.nodeName.toLowerCase() === tagName.toLowerCase()) {
+                console.log('nodeName: ', child.nodeName.toLowerCase)
+                matches.push(child);
+              }
+              matches = [...matches, ...byTagName(child, tagName)];
+            }
+            return matches;
           }
         
           console.log(byTagName(document.body, "h1").length);
