@@ -1,0 +1,24 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 10</title>
+    </head>
+    <body>  
+        <p>Name: <input type='text' data-help='Your full name'></p>
+        <p>Age: <input type='text' data-help='Age in years'></p>
+        <p id='help'></p>
+        <script>
+          let help = document.querySelector('#help');
+          let fields = document.querySelectorAll('input');
+          for (let field of [...fields]) {
+            field.addEventListener('focus', e => {
+              let text = event.target.dataset.help;
+              help.textContent = text;
+            });
+            field.addEventListener('blur', e => {
+              help.textContent = '';
+            });
+          }
+        </script>
+    </body>
+</html>

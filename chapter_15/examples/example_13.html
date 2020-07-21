@@ -1,0 +1,24 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 13</title>
+    </head>
+    <body>  
+       
+        <script>
+          // a different pattern of debouncing that allows you to fire responses
+          // during a series of events
+          let scheduled = null;
+          window.addEventListener('mousemove', e => {
+            if (!scheduled) {
+              setTimeout(() => {
+                document.body.textContent = `Mouse at ${scheduled.pageX},
+                ${scheduled.pageY}`;
+                scheduled = null;
+              }, 250)
+            }
+            scheduled = e;
+          });
+        </script>
+    </body>
+</html>

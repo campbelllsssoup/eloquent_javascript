@@ -1,0 +1,30 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 8</title>
+    </head>
+    <body>  
+        <style>
+          dot {position: absolute; display: block; border: 2px solid red; 
+                border-radius: 50px; height: 100px; width: 100px}
+        </style>
+        <p>Touch this page</p>
+        <script>
+          function update(e) {
+            for (let dot; dot = document.querySelector('dot');) {
+              dot.remove();
+            }
+            for (let i = 0; i < e.touches.length; i++) {
+              let {pageX, pageY} = e.touches[i];
+              let dot = document.createElement('dot');
+              dot.style.left = (pageX - 50) + 'px';
+              dot.style.top = (pageY - 50) + 'px';
+              document.body.appendChild(dot);
+            }
+          }
+          window.addEventListener('touchstart', update);
+          window.addEventListener('touchmove', update);
+          window.addEventListener('touchend', update);
+        </script>
+    </body>
+</html>

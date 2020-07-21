@@ -1,0 +1,29 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 6</title>
+    </head>
+    <body>  
+        <style>
+          body {
+            height: 200px;
+            background: beige;
+          }
+          .dot {
+            height: 8px; width: 8px;
+            border-radius: 4px; /* rounds corners */
+            background: blue;
+            position: absolute;
+          } 
+        </style>
+        <script>
+          window.addEventListener('click', e => {
+            let dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.left = (e.pageX - 4) + 'px';
+            dot.style.top = (e.pageY - 4) + 'px';
+            document.body.appendChild(dot);
+          });
+        </script>
+    </body>
+</html>

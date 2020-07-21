@@ -1,0 +1,20 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 12</title>
+    </head>
+    <body>  
+        <textarea>Type something here...</textarea>
+
+        <script>
+          // outputs the contents of the input field at least half a second
+          // after the user quits typing.
+          let textarea = document.querySelector('textarea');
+          let timeout;
+          textarea.addEventListener('input', e => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => console.log('Typed!'), 500);
+          });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 11</title>
+    </head>
+    <body>  
+        <p>Input: <input type='number'/></p>
+        <p>Output: <span id='output'></span></p>
+        <button>Click to work the WebWorker</button>
+        <script>
+          let input = document.querySelector('input');
+          let btn = document.querySelector('button');
+          let output = document.querySelector('#output');
+          let squareWorker = new Worker('code/squareworker.js');
+
+          squareWorker.addEventListener('message', event => {
+            console.log('The worker responded: ', event.data);
+            output.innerText = event.data;
+          });
+
+          squareWorker.postMessage(10);
+          squareWorker.postMessage(24);
+          btn.addEventListener('click', () => {
+            squareWorker.postMessage(input.textContent);
+          })
+          /*  This example won't work for some reason..
+              Uncaught DOMException: Failed to construct 'Worker': Script at 
+              '<squareworker_url>' cannot be accessed from origin 'null' */
+        </script>
+    </body>
+</html>

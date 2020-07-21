@@ -1,0 +1,27 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 9</title>
+    </head>
+    <body>  
+        <style>
+          #progress {
+            border-bottom: 5px solid blue;
+            width: 0;
+            position: fixed;
+            top: 0; left: 0;
+          }
+        </style>
+        <div id='progress'></div>
+        <script>
+          // Create some content
+          document.body.appendChild(document.createTextNode(
+            'supercalifragaliciousexpialladocious '.repeat(1000)));
+          let bar = document.querySelector('#progress');
+          window.addEventListener('scroll', () => {
+            let max = document.body.scrollHeight - window.innerHeight;
+            bar.style.width = `${(window.pageYOffset / max) * 100}%`
+          });
+        </script>
+    </body>
+</html>
