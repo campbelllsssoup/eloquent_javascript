@@ -1,0 +1,68 @@
+<!-- Exercise 15-3: Tabs : DONE!!!
+  Tabbed panels are widely used in user interfaces. They allow you to select 
+  an interface panel by choosing from a number of tabs “sticking out” above an 
+  element.
+
+  In this exercise you must implement a simple tabbed interface. Write a 
+  function, asTabs, that takes a DOM node and creates a tabbed interface 
+  showing the child elements of that node. It should insert a list of <button> 
+  elements at the top of the node, one for each child element, containing 
+  text retrieved from the data-tabname attribute of the child. All but one of 
+  the original children should be hidden (given a display style of none). 
+  The currently visible node can be selected by clicking the buttons.
+
+  When that works, extend it to style the button for the currently selected tab 
+  differently so that it is obvious which tab is selected.
+-->
+
+
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Exercise 3</title>
+    </head>
+    <body>
+        <tab-panel>
+            <div id='tabs'>
+            </div>
+            <div id='content'>
+                <div data-tabname="one">Tab one</div>
+                <div data-tabname="two" style='display: none;'>Tab two</div>
+                <div data-tabname="three" style='display: none;'>Tab three</div>
+            </div>
+        </tab-panel>
+        <script>
+          let tabsDiv = document.querySelector('#tabs');
+          let children = [...document.querySelector('#content').children];
+          let curTab = 0;
+          function asTabs(node) {
+            for (let child of children) {
+              let btn = document.createElement('button');
+              btn.innerText = child.dataset.tabname;
+              btn.dataset.contentIndex = children.indexOf(child);
+              tabsDiv.append(btn);
+            }
+            tabsDiv.children[0].style.backgroundColor = 'green';
+
+            tabsDiv.addEventListener('click', e => {
+              if (e.target.nodeName == 'BUTTON') {
+                // set the clicked tab's bg, remove color from other buttons.
+                let targIdx = e.target.dataset.contentIndex;
+                [...tabsDiv.children].forEach((btn, idx) => {
+                  if (idx == targIdx) { btn.style.backgroundColor = 'green'; } 
+                  else { btn.style.backgroundColor = ''; }
+                })
+                // show desired content, hide everything else.
+                children.forEach((node, idx) => {
+                  if (idx != targIdx) { node.style.display = 'none'; }
+                  else { node.style.display = 'block'; }
+                })
+              }
+            });
+          }
+
+          
+          asTabs(document.querySelector("tab-panel"));
+        </script>
+    </body>
+</html>
