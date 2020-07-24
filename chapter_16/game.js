@@ -75,31 +75,6 @@ class Player {
 }
 Player.prototype.size = new Vec(0.8, 1.5);
 
-const levelChars = {
-  ".": "empty", "#": "wall", "+": "lava",
-  "@": Player, "o": Coin,
-  "=": Lava, "|": Lava, "v": Lava
-};
-
-class Level {
-  constructor(plan) {
-    let rows = plan.trim().split("\n").map(l => [...l]);
-    this.height = rows.length;
-    this.width = rows[0].length;
-    this.startActors = []; // holds dynamic elements of game (coins, lava, player)
-
-    this.rows = rows.map((row, y) => {
-      return row.map((ch, x) => {
-        let type = levelChars[ch];
-        if (typeof type == "string") return type;
-        this.startActors.push(
-          type.create(new Vec(x, y), ch));
-        return "empty";
-      });
-    });
-  }
-}
-
 class State {
   constructor(level, actors, status) {
     this.level = level;
@@ -113,6 +88,67 @@ class State {
 
   get player() {
     return this.actors.find(a => a.type == "player");
+  }
+}
+
+class Monster {
+  constructor(pos, speed) {
+    this.pos = pos;
+    this.speed = speed;
+  }
+
+  get type() { return "monster"; }
+
+  static create(pos) {
+    return new Monster(pos, new Vec(5, 0));
+  }
+
+  update(time, state) {
+    let newPos = this.pos.plus(this.speed.times(time));
+    if (!state.level.touches(newPos, this.size, "wall")) {
+      return new Monster(newPos, this.speed);
+    } else {
+      return new Monster(this.pos, this.speed.times(-1));
+    }
+  }
+
+  collide(state) {
+    let playerPos = state.player.pos;
+    let monsterPos = this.pos;
+    let playerVec = new Vec(Math.ceil(playerPos.x), Math.ceil(playerPos.y));
+    let monsterVec = new Vec(Math.ceil(monsterPos.x), Math.ceil(monsterPos.y));
+
+    if (playerVec.y <= monsterVec.y) {
+      let filtered = state.actors.filter(a => a != this);
+      return new State(state.level, filtered, "playing");
+    } else {
+      return new State(state.level, state.actors, "lost");
+    }
+  }
+}
+Monster.prototype.size = new Vec(1.2, 2);
+
+const levelChars = {
+  ".": "empty", "#": "wall", "+": "lava",
+  "@": Player, "o": Coin,
+  "=": Lava, "|": Lava, "v": Lava, "M": Monster
+};
+
+class Level {
+  constructor(plan) {
+    let rows = plan.trim().split("\n").map(l => [...l]);
+    this.height = rows.length;
+    this.width = rows[0].length;
+    this.startActors = []; // holds actor's starting positions
+    this.rows = rows.map((row, y) => {
+      return row.map((ch, x) => {
+        let type = levelChars[ch];
+        if (typeof type == "string") return type;
+        this.startActors.push(
+          type.create(new Vec(x, y), ch));
+        return "empty";
+      });
+    });
   }
 }
 
@@ -218,7 +254,7 @@ State.prototype.update = function(time, keys) {
   let player = newState.player;
   if (this.level.touches(player.pos, player.size, "lava")) {
     return new State(this.level, actors, "lost");
-  }
+  } 
 
   for (let actor of actors) {
     if (actor != player && overlap(actor, player)) {
@@ -358,4 +394,3 @@ async function runGame(plans, Display) {
   document.body.innerHTML = "<h1>YOU WIN!!!</h1>"
   console.log("You've won!");
 }
-
