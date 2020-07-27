@@ -1,0 +1,25 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 6</title>
+    </head>
+    <body>  
+        <canvas></canvas>
+        <script>
+          let cx = document.querySelector("canvas").getContext("2d");
+          cx.beginPath();
+          cx.moveTo(50, 10);
+          cx.lineTo(10, 70);
+          cx.lineTo(90, 70);
+          cx.fillStyle = 'green';
+          cx.fill();
+
+          let colors = ['red', 'green', 'blue'];
+          setInterval(() => {
+            let randIdx = Math.floor(Math.random() * colors.length);
+            cx.fillStyle = colors[randIdx];
+            cx.fill();
+          }, 500)
+        </script>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 4</title>
+    </head>
+    <body>  
+        <canvas></canvas>
+        <script>
+          let cx = document.querySelector("canvas").getContext("2d");
+          cx.strokeStyle = "blue";
+          cx.strokeRect(5, 5, 50, 50);
+          cx.lineWidth = 5;
+          cx.strokeRect(135, 5, 50, 50);
+        </script>
+        <!-- It helps me to think of the context object as a paintbrush. You can 
+        set the strokeStyle to change the color of the shape you're about to 
+        draw - yet you can also dip that brush in water and select a new color
+        by simply setting the context object's strokeStyle to a new color. Also,
+        just like a painting, once an object is drawn it's finished.. no further
+        modifications to the context object will affect what has already been
+        drawn. -->
+    </body>
+</html>

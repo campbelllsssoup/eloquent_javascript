@@ -1,0 +1,26 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 5</title>
+    </head>
+    <body>  
+        <canvas></canvas>
+        <script>
+          let cx = document.querySelector("canvas").getContext("2d");
+          cx.beginPath(); // lets the context object know that you're starting
+          // to draw a path
+
+          // in the for loop we're specifying where we want the lines to begin
+          // and end, but they won't be drawn until we call stroke.
+          for (let y = 10; y < 100; y += 10) {
+            cx.moveTo(10, y); // moves the paintbrush to a new position
+            cx.lineTo(90, y); // specifies the line that you'll draw, starting 
+            // at where the paintbrush currently is.
+            
+            // if you don't call moveTo, then the paintbrush's current position
+            // will be at the end of the line that was last drawn.
+          }
+          cx.stroke(); // draws the path
+        </script>
+    </body>
+</html>

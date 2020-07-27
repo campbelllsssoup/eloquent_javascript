@@ -1,0 +1,19 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 14</title>
+    </head>
+    <body> 
+        <canvas></canvas>
+        <script>
+          let cx = document.querySelector("canvas").getContext("2d");
+          cx.scale(3, .5); // #scale(<horizontalScale>, <verticalScale>)
+          cx.beginPath();
+          cx.arc(50, 50, 40, 0, 7); //#arc(xCenter, yCenter, radius, startRad, endRad)
+          cx.lineWidth = 3;
+          cx.stroke();
+          // if you open up this webpage, you'll see that instead of a circle
+          // you have drawn an eclipse due to you calling scale in the beginning.
+        </script>
+    </body>
+</html>

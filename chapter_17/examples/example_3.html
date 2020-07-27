@@ -1,0 +1,27 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 3</title>
+    </head>
+    <body>  
+        <p>Before canvas.</p>
+        <canvas width="120" height="60"></canvas>
+        <p>After canvas.</p>
+        <script>
+          let canvas = document.querySelector("canvas");
+          let context = canvas.getContext("2d");
+          context.fillStyle = "red";
+          context.fillRect(10, 10, 100, 50);
+          // context.strokeRect(10, 10, 100, 50); draws the outline of a rectangle
+        </script>
+        <!--
+          fillRect(<xCoord, yCoord, width, height>)
+
+          The coordinate system starts at (0,0) from the top-left of the screen
+          just like the coordinate system in the DOM.
+
+          We give the rectangle it's red color by calling fillStyle on the
+          context object and assigning it a color value.
+        -->
+    </body>
+</html>
