@@ -1,0 +1,33 @@
+<!-- Exercise 17-3: A Boucing Ball : NOT DONE...
+
+  Use the requestAnimationFrame technique that we saw in Chapter 14 and Chapter 
+  16 to draw a box with a bouncing ball in it. The ball moves at a constant 
+  speed and bounces off the box’s sides when it hits them.
+-->
+
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Exercise 3</title>
+    </head>
+    <body>  
+        <canvas width="400" height="400"></canvas>
+        <script>
+          let cx = document.querySelector("canvas").getContext("2d");
+        
+          let lastTime = null;
+          function frame(time) {
+            if (lastTime != null) {
+              updateAnimation(Math.min(100, time - lastTime) / 1000);
+            }
+            lastTime = time;
+            requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+        
+          function updateAnimation(step) {
+            // Your code here.
+          }
+        </script>
+    </body>
+</html>

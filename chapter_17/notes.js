@@ -120,6 +120,11 @@
   around. If you want to do something with a path, you must make a sequence of 
   method calls to describe it's shape.
 
+  Use the method 'moveTo' with x and y coordinates as arguments to move your
+  'paintbrush' around. Call the method 'lineTo' supplying the target x and y in 
+  order to actually draw the lines. The line will start at where the paintbrush
+  was last located, the last call to moveTo or the default coordinates (0,0).
+
   See './examples/example_5.html' for path drawing enlightment.
 
   When filling a path (by calling 'fill'), each shape is filled separately. In

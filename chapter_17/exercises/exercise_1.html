@@ -1,0 +1,148 @@
+<!-- Exercise 17-1: Shapes : DONE!!!
+
+  Write a program that draws the following shapes on a canvas:
+
+  1. A trapezoid (a rectangle that is wider on one side)
+
+  2. A red diamond (a rectangle rotated 45 degrees or ¼π radians)
+
+  3. A zigzagging line
+
+  4. A spiral made up of 100 straight line segments
+
+  5. A yellow star
+
+  When drawing the last two, you may want to refer to the explanation of 
+  Math.cos and Math.sin in Chapter 14, which describes how to get coordinates 
+  on a circle using these functions.
+
+  I recommend creating a function for each shape. Pass the position, and 
+  optionally other properties such as the size or the number of points, as 
+  parameters. The alternative, which is to hard-code numbers all over your code, 
+  tends to make the code needlessly hard to read and modify.
+-->
+
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Exercise 1</title>
+    </head>
+    <body width='2000px' height='1000px'>  
+        <canvas width="2000px" height="1000px"></canvas>
+        <script>
+          let cx = document.querySelector("canvas").getContext("2d");
+        
+          function trapezoid(ctx, x, y, width, height) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + height);
+            ctx.lineTo(x + width, y + height);
+            ctx.lineTo(x + (width * 0.75), y);
+            ctx.lineTo(x + (width * 0.25), y);
+            ctx.closePath();
+            ctx.stroke();
+          }
+
+          // Instead of using one of the diamond's vertices as the true
+          // x, y coords I've chosen to follow the example set by the 
+          // box model and make the top left boundary of the diamond's
+          // 'box' the x, y coordinate. This will make it easier to 
+          // position the diamond later down the line.
+          function redDiamond(ctx, x, y, width) {
+            ctx.fillStyle = 'red';
+            // used Pythagorean's theorem to calculate offset
+            // width^2 = a^2 + b^2
+            // width^2 = 2(a^2)
+            // width^2 / 2 = a^2
+            // sqrt((width^2) / 2) = a
+            let offset = Math.sqrt((width ** 2) / 2);
+            ctx.translate(x + offset, y);
+            // you have to take the offset into account before you call the
+            // rotate method because transformations 'stack'. When I accounted
+            // for the offset in the last transformation I got awkward results.
+            ctx.rotate(Math.PI * .25);
+            ctx.translate(-x, -y); 
+            ctx.fillRect(x, y, width, width);
+            ctx.resetTransform();
+          }
+
+          function getRadians(deg) {
+            return deg * (Math.PI / 180);
+          }
+
+          function getZagOffset(width, zagAngle) {
+            let zagRads = getRadians(zagAngle);
+            // calculate the hypotenuse of the triangle using trigonometry
+            let lineLength = width / ( Math.cos(zagRads) );
+            // calculate length of 'height' side using Pythagorean theorem
+            return Math.sqrt((lineLength ** 2) - (width ** 2));
+          }
+
+          // x, y are at the top left of the shape presuming a box model.
+          // in the picture there are 12 lines
+
+          // zagAngle is measured in degrees
+          function zigZag(ctx, x, y, width, lines, zagAngle) {
+            let offset = getZagOffset(width, zagAngle);
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            for (let count = 1; count <= lines; count++) {
+              if (count % 2 == 0) {
+                ctx.lineTo(x, y + (offset * (count * 0.5)));
+              } else {
+                ctx.lineTo(x + width, y + (offset * (count * 0.5)));
+              }
+            }
+            ctx.stroke();
+          }
+
+          // as the gap parameter gets smaller, the easier is is to see that
+          // these are all straight lines that are connected. Try gap = 15
+          function spiral(ctx, centerX, centerY, revs, gap) {
+            let radius = 0;
+            let sAngle = 0;
+            let eAngle = 0;
+            // ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            for (let n = 0; n < (revs * gap); n++) {
+              radius += 0.75; // constantly pushes line 'outwards' from center
+              // make a revolution every 50 iterations
+              sAngle = !!eAngle ? eAngle : 0;
+              eAngle += (Math.PI * 2) / gap; // constantly changes the angle
+              let x = centerX + radius * Math.cos(eAngle);
+              let y = centerY + radius * Math.sin(eAngle);
+              /* segementation is more at smaller gap values
+                 pronounced when using the #lineTo approach */
+              // ctx.lineTo(x, y); 
+
+              /* when using #arc approach, at higher values you can see the
+                 'steps' that build this circle clearly */
+              ctx.arc(centerX, centerY, radius, sAngle, eAngle);
+            }
+            ctx.stroke();
+          }
+
+          function star(ctx, centerX, centerY, points, radius) {
+            ctx.fillStyle = '#FFA500';
+            ctx.beginPath();
+            ctx.moveTo(centerX + radius, centerY);
+            let step = (Math.PI * 2) / points;
+            let count = 0;
+            while (count < 6.28) {
+              let x = centerX + radius * Math.cos(count + step);
+              let y = centerX + radius * Math.sin(count + step);
+              ctx.quadraticCurveTo(centerX, centerY, x, y);
+              count += step;
+            }
+            
+            ctx.fill();
+          }
+
+          trapezoid(cx, 0, 30, 100, 50);
+          redDiamond(cx, 120, 20, 50);
+          zigZag(cx, 220, 30, 50, 12, 10);
+          spiral(cx, 350, 60, 3, 15);
+          star(cx, 200, 200, 8, 50);
+        </script>
+    </body>
+</html>
