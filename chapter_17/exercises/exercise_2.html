@@ -1,4 +1,4 @@
-<!-- Exercise 17-2: The Pie Chart : NOT DONE...
+<!-- Exercise 17-2: The Pie Chart : DONE!!!
 
   Earlier in the chapter, we saw an example program that drew a pie chart. 
   Modify this program so that the name of each category is shown next to the 
@@ -17,6 +17,10 @@
     <body>  
         <canvas width="600" height="300"></canvas>
         <script>
+          let results = [{name: "Satisfied", count: 1043, color: "lightblue"},
+            {name: "Neutral", count: 563, color: "lightgreen"},
+            {name: "Unsatisfied", count: 510, color: "pink"},
+            {name: "No comment", count: 175, color: "silver"}];
           let cx = document.querySelector("canvas").getContext("2d");
           let total = results
             .reduce((sum, {count}) => sum + count, 0);
@@ -24,14 +28,27 @@
           let centerX = 300, centerY = 150;
 
           // Add code to draw the slice labels in this loop.
+          // Draw text outside of the slice next to it.
+          cx.textBaseline = 'middle';
           for (let result of results) {
             let sliceAngle = (result.count / total) * 2 * Math.PI;
             cx.beginPath();
+            cx.fillStyle = result.color;
+            cx.font = 'bold 12px serif';
+            let middleAngle = currentAngle + 0.5 * sliceAngle;
+            let textX = Math.cos(middleAngle) * 120 + centerX;
+            let textY = Math.sin(middleAngle) * 120 + centerY;
+            if (Math.cos(middleAngle) > 0) {
+              cx.textAlign = 'left'; // right-side of circle
+            } else {
+              cx.textAlign = 'right';
+            }
+            cx.fillText(result.name, textX, textY);
+
             cx.arc(centerX, centerY, 100,
                   currentAngle, currentAngle + sliceAngle);
             currentAngle += sliceAngle;
             cx.lineTo(centerX, centerY);
-            cx.fillStyle = result.color;
             cx.fill();
           }
         </script>
