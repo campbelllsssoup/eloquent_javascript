@@ -14,15 +14,15 @@
   additional image files and without having to make transformed drawImage calls 
   every frame.
 
-  Below is an executable proof.
+--------------------------------------------------------------------------------
+  
+  Solution: We could create another canvas on the page that is off-screen to the
+  right and disable scrolling horizontally on the page. On this second canvas
+  we should import the normally-directioned images.
+  
+  We won't only store the normally-directioned images though, we'll also create
+  new transformations of these sprites and store them on the same canvas. Now,
+  we have a 'cache' of pseudo-sprites where each is a position any given sprite 
+  may be in at any time.
+  
 -->
-
-<!doctype html>
-    <head>
-        <meta charset='utf-8'>
-        <title>Exercise 4</title>
-    </head>
-    <body>  
-      
-    </body>
-</html>
