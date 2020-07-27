@@ -1,4 +1,4 @@
-<!-- Exercise 17-3: A Boucing Ball : NOT DONE...
+<!-- Exercise 17-3: A Boucing Ball : DONE!!!
 
   Use the requestAnimationFrame technique that we saw in Chapter 14 and Chapter 
   16 to draw a box with a bouncing ball in it. The ball moves at a constant 
@@ -13,7 +13,8 @@
     <body>  
         <canvas width="400" height="400"></canvas>
         <script>
-          let cx = document.querySelector("canvas").getContext("2d");
+          let canvas = document.querySelector('canvas');
+          let cx = canvas.getContext("2d");
         
           let lastTime = null;
           function frame(time) {
@@ -25,8 +26,32 @@
           }
           requestAnimationFrame(frame);
         
+          // generates a random number between 1 and 10.
+          function randNum() {
+            return Math.ceil((Math.random() * 100) / 10);
+          }
+
+          let boxLen = 400;
+          let ballX = boxLen / 10;
+          let ballY = boxLen / 3;
+          let directionX = 2;
+          let directionY = 2;
+          cx.fillStyle = 'green';
+          
           function updateAnimation(step) {
-            // Your code here.
+            cx.clearRect(0, 0, canvas.width, canvas.height);
+            cx.beginPath();
+            ballX += directionX;
+            ballY += directionY;
+            cx.strokeRect(0, 0, boxLen, boxLen);
+            cx.arc(ballX, ballY, 20, 0, 6.3);
+            cx.stroke();
+            if (ballX > 390 || ballX <= 10) {
+              directionX = -1 * directionX;
+            }
+            if (ballY > 390 || ballY <= 10) {
+              directionY = -1 * directionY;
+            }
           }
         </script>
     </body>
