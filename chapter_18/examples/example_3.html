@@ -1,0 +1,15 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 3</title>
+    </head>
+    <body>
+        <script>
+            fetch("https://swapi.dev/api/people/1")
+              // .then(resp => resp.text())
+              .then(resp => resp.json())
+              .then(console.log); 
+              // output the body of response to the console as plain text
+        </script>
+    </body>
+</html>

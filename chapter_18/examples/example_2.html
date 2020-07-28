@@ -1,0 +1,19 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 2</title>
+    </head>
+    <body>
+        <script>
+            fetch("https://swapi.dev/api/people/1")
+              .then(response => {
+                console.log(response.status);
+                // → 200
+                console.log(response.headers.get("Content-Type"));
+                // → text/plain
+                return response.json(); // convert the response to JS from JSON
+              })
+              .then(console.log); // output the body of response to the console
+        </script>
+    </body>
+</html>

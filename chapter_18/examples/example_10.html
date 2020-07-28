@@ -1,0 +1,21 @@
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Example 10</title>
+    </head>
+    <body>
+        <label>
+            <input type="checkbox" id="purple"> Make this page purple
+          </label>
+          <script>
+            let checkbox = document.querySelector("#purple");
+            // We listen for changes on the checkbox - if it is checked, then
+            // we'll set the background of the body to purple - if not it is
+            // reset to it's default value.
+            checkbox.addEventListener("change", () => {
+              document.body.style.background =
+                checkbox.checked ? "mediumpurple" : "";
+            });
+          </script>
+    </body>
+</html>
