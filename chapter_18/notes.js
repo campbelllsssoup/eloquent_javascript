@@ -637,4 +637,8 @@
 
   See './examples/example_16.html' for an example of a crude note-taking app
   that makes use of the localStorage object.
+
+  You can use 'sessionStorage' to save data just like you can with 
+  'localStorage' except with 'sessionStorage' the data is erased after each
+  session ends.
 */

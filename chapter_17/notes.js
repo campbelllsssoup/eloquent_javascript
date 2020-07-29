@@ -1,6 +1,6 @@
 // Chapter 17 Notes - Drawing on Canvas
 // Start time: 1730 7-24-20
-
+// End time: 1738 7-26-20
 
 /*
   Intro
