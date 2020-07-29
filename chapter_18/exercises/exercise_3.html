@@ -26,3 +26,87 @@
   should be included when computing the next generation.
   
 -->
+
+<!doctype html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Exercise 3</title>
+    </head>
+    <body>
+        <button id='run'>Run Simulation</button>
+        <table id='life'>
+        </table>
+        <script>
+          document.body.style = 'background-color: lightgreen;';
+          let tbl = document.querySelector('#life');
+          let btn = document.querySelector('#run');
+
+          function addRow(table) {
+            let row = document.createElement('tr');
+            table.appendChild(row);
+          }
+
+          function addCell(table, isChecked) {
+            let rows = [...table.children];
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = isChecked;
+            rows[rows.length - 1].appendChild(checkbox);
+          }
+
+          function calcLife(cells, idx, cell) {
+            /* by adding these numbers to a cell's index, we can read get it's 
+            neighbor's values */
+            let cardinal = [-10, -9, 1, 11, 10, 9, -1, -11];
+            let count = 0;
+            cardinal.forEach(neighborNum => {
+              if (cells[idx + neighborNum] != undefined) {
+                !!cells[idx + neighborNum].checked && count++;
+              }
+            })
+            if (count > 3 || count < 2) return false;
+            else {
+              if (!cell.checked) {
+                return count === 3 ? true : false;
+              };
+              return true;
+            }
+          }
+
+          function simulateLife() {
+            console.log(tbl.children);
+            let rows = [...tbl.children];
+            let cellsMat = rows.map(row => [...row.children]);
+            let cellsFlat = cellsMat.flat(Infinity); 
+            let results = cellsFlat.map((cell, i) => calcLife(cellsFlat, i, cell));
+            cellsFlat.forEach((cell, i) => {
+              cell.checked = results[i];
+            })
+
+          }
+
+          let cells = [];  
+          for (let i = 0; i < 10; i++) {
+            cells.push([]);
+            let row = cells[cells.length - 1];
+            addRow(tbl);
+            for (let j = 0; j < 10; j++) {
+              let alive = Math.random() < 0.5 ? true : false;
+              row.push(alive);
+              addCell(tbl, alive);
+            }
+          }
+        
+          btn.addEventListener('click', simulateLife);
+          
+          // const event = new MouseEvent('click', {
+          //   view: window,
+          //   bubbles: false,
+          //   cancelable: false
+          // });
+          // setInterval(() => {
+          //   btn.dispatchEvent(event);
+          // }, 500);
+        </script>
+    </body>
+</html>
