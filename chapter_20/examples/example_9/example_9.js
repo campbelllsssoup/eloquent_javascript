@@ -11,7 +11,7 @@ createServer((request, response) => {
       if (error.status != null) return error;
       return {body: String(error), status: 500};
     })
-    .then(({body, status = 200, type = "text/plain"}) => {
+    .then(({body = '', status = 200, type = "text/plain"}) => {
        response.writeHead(status, {"Content-Type": type});
        if (body && body.pipe) body.pipe(response);
        // #pipe?
@@ -108,3 +108,20 @@ methods.PUT = async function(request) {
   await pipeStream(request, createWriteStream(path));
   return {status: 204};
 };
+
+// Exercise 2
+
+// const { mkdir } = require('fs').promises;
+
+// methods.MKCOL = async function(request) {
+//   let respObj = {};
+//   try {
+//     await mkdir(urlPath(request.url), {});
+//   } catch (error) {
+//     respObj.body = 'ERROR: This directory already exists.';
+//   }
+//   return respObj;
+// }
+
+exports.methods = methods;
+exports.urlPath = urlPath;
