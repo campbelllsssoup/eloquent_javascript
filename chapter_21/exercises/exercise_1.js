@@ -12,10 +12,10 @@
 
   Use streams just in case a large amount of data comes through.
 
+  copied solution.
 */
 
-const { createReadStream, createWriteStream } = require('fs');
-const { pipe, stat } = require('fs').promises;
+const { writeFile, readFileSync } = require('fs');
 
 
 /* 
