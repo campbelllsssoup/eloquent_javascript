@@ -1,11 +1,13 @@
-var {createServer} = require("http");
-var Router = require("./router");
-var ecstatic = require("ecstatic");
+const dbTalks = './db/talks.json';
+let { createServer } = require("http");
+let Router = require("./router");
+let ecstatic = require("ecstatic");
+const { writeFile, readFileSync } = require("fs");
 
-var router = new Router();
-var defaultHeaders = {"Content-Type": "text/plain"};
+let router = new Router();
+let defaultHeaders = {"Content-Type": "text/plain"};
 
-var SkillShareServer = class SkillShareServer {
+let SkillShareServer = class SkillShareServer {
   constructor(talks) {
     this.talks = talks;
     this.version = 0;
@@ -69,9 +71,10 @@ router.add("PUT", talkPath,
            async (server, title, request) => {
   let requestBody = await readStream(request);
   let talk;
-  try { talk = JSON.parse(requestBody); }
-  catch (_) { return {status: 400, body: "Invalid JSON"}; }
-
+  try { 
+    talk = JSON.parse(requestBody); 
+  } catch (e) { return {status: 400, body: String(e)}; }
+   
   if (!talk ||
       typeof talk.presenter != "string" ||
       typeof talk.summary != "string") {
@@ -81,6 +84,8 @@ router.add("PUT", talkPath,
                          presenter: talk.presenter,
                          summary: talk.summary,
                          comments: []};
+  // write to db asynchronously
+  
   server.updated();
   return {status: 204};
 });
@@ -105,7 +110,7 @@ router.add("POST", /^\/talks\/([^\/]+)\/comments$/,
   }
 });
 
-SkillShareServer.prototype.talkResponse = function() {
+SkillShareServer.prototype.talkResponse = async function() {
   let talks = [];
   for (let title of Object.keys(this.talks)) {
     talks.push(this.talks[title]);
@@ -146,6 +151,23 @@ SkillShareServer.prototype.updated = function() {
   let response = this.talkResponse();
   this.waiting.forEach(resolve => resolve(response));
   this.waiting = [];
+
+  writeFile(dbTalks, JSON.stringify(this.talks), e => {
+    if (e) console.log(e);
+  });
 };
 
-new SkillShareServer(Object.create(null)).start(8000);
+
+
+function loadTalks() {
+  let json;
+  try {
+    json = JSON.parse(readFileSync(dbTalks, "utf8"));
+  } catch (e) {
+    json = {};
+  }
+  return Object.assign(Object.create(null), json);
+}
+
+// console.log(loadTalks())
+new SkillShareServer(loadTalks()).start(8000);
